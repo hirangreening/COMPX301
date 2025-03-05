@@ -6,7 +6,9 @@ Solo solutions require a balanced 2-way sort merge while pairs must complete a b
 
 Specification
 
-    1. You are sorting text files, and each line is one datum. That is, if you input two entire lines of some book then they are compared using a Java string compare function, treating each line as if it was [say] a single entry in a dictionary.  
+    1. You are sorting text files, and each line is one datum. 
+       That is, if you input two entire lines of some book then they are compared using a Java string compare function, 
+       treating each line as if it was [say] a single entry in a dictionary.  
        That is, you are not sorting just words or letters or numbers .... you are sorting entire lines, comparing one line with another.  This is just like the Linux "sort" command.
     2. Be careful when reading text files using a function like readLine() because different operating systems and applications may use different control character combinations to indicate end-of-line,
        and the reading method may throw out the actual end-of-line marker(s) in the input file and substitute its own perferred one when outputting.  
