@@ -1,0 +1,771 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>COMPX301 Week 2</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1a7ac460-8dda-80b8-aeed-de65c2a39ffa" class="page sans"><header><h1 class="page-title">COMPX301 Week 2</h1><p class="page-description"></p></header><div class="page-body"><p id="1aeac460-8dda-8091-b555-ef3e42f7a490" class="">
+</p><h3 id="1abac460-8dda-8055-b180-e11fe30a124b" class="">Housekeeping:</h3><ul id="1aeac460-8dda-8097-a237-f5befa546de3" class="bulleted-list"><li style="list-style-type:disc">These notes aren’t exhaustive, there may be some lecture content missed. They are designed to supplement your own notes.</li></ul><ul id="1aeac460-8dda-8026-a650-c757142bbd31" class="bulleted-list"><li style="list-style-type:disc">Please don’t dm me on discord, email is preferred. Alternatively post in the public 301 discord channel to give your peers a chance to answer any questions you have.</li></ul><ul id="1afac460-8dda-8004-b6a3-ffda4e84bb08" class="bulleted-list"><li style="list-style-type:disc">Windows subsystem for Linux… Can avoid some problems with powershell such as end of line discrepancies or null characters.</li></ul><h2 id="1a7ac460-8dda-804a-9967-c27807198407" class="">Things you should know from this week:</h2><ul id="1abac460-8dda-80d8-b1a7-d27778467a0c" class="bulleted-list"><li style="list-style-type:disc">What big O is.</li></ul><ul id="1aeac460-8dda-8018-b679-f384ad419129" class="bulleted-list"><li style="list-style-type:disc">How a balanced sort merge works.</li></ul><ul id="1aeac460-8dda-8090-bada-e83ccd7aead1" class="bulleted-list"><li style="list-style-type:disc">Heap sort.</li></ul><ul id="1aeac460-8dda-800d-a477-d2af1c9ce1a7" class="bulleted-list"><li style="list-style-type:disc">How to visually represent K-way merging of runs.</li></ul><ul id="1aeac460-8dda-8065-913d-f346dc7245dd" class="bulleted-list"><li style="list-style-type:disc">How can we make K-way merges more efficient: Use replacement selection to reduce the number of initial runs, increase the number of runs being merged at once (K), use polyphase sort merge.</li></ul><h2 id="1abac460-8dda-80cd-8ff2-d8c54b09d3d2" class="">The Assignment:</h2><h3 id="1aeac460-8dda-80db-a722-d545aa80e8ef" class="">Important notes/FAQ:</h3><ul id="1aeac460-8dda-801b-afb5-effd7b91533b" class="bulleted-list"><li style="list-style-type:disc">When we create a run, each item or piece of data in the run is one <strong>full line of text</strong> provided by some readLine() equivalent function in Java. So creating a run of length 64 would require calling readLine() 64 times and adding those lines to some array/list.</li></ul><ul id="1aeac460-8dda-8015-93d4-f123988286f0" class="bulleted-list"><li style="list-style-type:disc">Make sure the output of both halves of the assignment are made available to the marker: More about this in the usage section below.</li></ul><ul id="1aeac460-8dda-8047-919d-caa40d93c0c1" class="bulleted-list"><li style="list-style-type:disc">A tape = a file. Once one run has been written to each tape, new runs are then appended onto the end of previous runs in the same tapes.</li></ul><h3 id="1abac460-8dda-807b-b758-dacdfea775d2" class="">Balanced 2/4-way Sort Merge:</h3><p id="1abac460-8dda-8044-b8e2-dcca1af7366c" class="">Takes an input stream from an external source of size n. Load m items into memory where m is memory capacity (artificially set for the purposes of this assignment as ‘run length’). Use heapsort to sort the data within memory. Write the data in memory to some device or file, called “tapes”. Each chunk of sorted data is called a “run”.</p><h3 id="1acac460-8dda-8079-8908-d6c18fbb108f" class="">How do we sort the initial runs?</h3><p id="1acac460-8dda-8087-9096-dcb9c8c2fa29" class="">We are using a heap sort to sort the initial runs. With heap sort we treat a regular array as a tree.</p><figure id="1acac460-8dda-80a5-9af0-d3d0044d839e" class="image"><a href="image.png"><img style="width:624px" src="image.png"/></a></figure><p id="1acac460-8dda-80df-83e4-f3923b11f4b8" class="">If the index of some array element is i, we can find the left child of that element using 2i + 1, and the right child will be 2i + 2. The parent of any element is given by the lower bound of (i-1)/2.</p><p id="1acac460-8dda-807f-8d22-d482ececdae9" class="">To sort the array we call a recursive function typically referred to as “heapify”.</p><p id="1acac460-8dda-808f-a7b7-e652ce055319" class="">Heapify will look at the two children of the node that it is called on. If one or both of the children has a larger value, it swaps the largest value with that of the parent node. It then recursively continues down the tree until the heap property is restored.</p><p id="1acac460-8dda-8060-9e58-e14b6b2c5ef4" class="">First we need to build a max heap, to do this we start heapifying each sub-tree from the bottom up, causing us to end up with a max-heap.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1aeac460-8dda-80a5-883d-c0f412f7d2ec" class="code"><code class="language-Java">// How do we find each sub-tree?
+n = arr.length
+for (i = n / 2 - 1; i &gt;= 0; i--) ...</code></pre><p id="1acac460-8dda-80ba-909a-e3d0497f56c9" class="">Then we:</p><ol type="1" id="1acac460-8dda-80c8-a4bf-f37607e346b7" class="numbered-list" start="1"><li>Swap the root (largest) element of the array with the element in the last position of the array.</li></ol><ol type="1" id="1acac460-8dda-805e-923c-f125c5ef74f5" class="numbered-list" start="2"><li>Reduce the ‘size’ of the heap by 1.</li></ol><ol type="1" id="1acac460-8dda-80a6-8e80-cd2096f58d0e" class="numbered-list" start="3"><li>Heapify the root element again so we have the highest element at the root.</li></ol><ol type="1" id="1acac460-8dda-807c-b7dc-f5ee9a58c1ba" class="numbered-list" start="4"><li>Repeat these steps until our array is sorted.</li></ol><p id="1acac460-8dda-8095-aaf8-ded79094b79b" class="">A useful resource complete with code examples: <a href="https://www.programiz.com/dsa/heap-sort">https://www.programiz.com/dsa/heap-sort</a></p><h3 id="1acac460-8dda-80fe-9e95-c3ce659f375c" class="">How do we merge the runs?</h3><p id="1acac460-8dda-8021-b2cd-d3eac29ac2d4" class="">You will end up with n/m runs of length m, with each run being sorted data.</p><p id="1acac460-8dda-8091-aea2-c49136fd1fda" class="">Once we have written a run to each tape, we then begin appending runs to the end of previous runs.</p><h3 id="1abac460-8dda-80b8-933c-e48842e784ac" class="">2-way (solo assignment):</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1abac460-8dda-8088-b83f-d69a06f07d2a" class="code"><code class="language-JavaScript">Tape1 Tape2 
+  r1    r2   
+  r3    r4
+  r5    r6
+  r7    r8   </code></pre><p id="1abac460-8dda-8030-b1e6-f20203acfa08" class="">Once we have our sorted runs, we then merge them together. </p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1abac460-8dda-8055-9c92-caf4138abd24" class="code"><code class="language-JavaScript">Tape1 Tape2     Tape3 Tape4
+  r1    r2  -&gt;  r1&amp;r2 r3&amp;r4 
+  r3    r4      
+  r5    r6  -&gt;  r5&amp;r6 r7&amp;r8
+  r7    r8</code></pre><p id="1abac460-8dda-8056-b4a9-f4b2b3440199" class="">We can now discard the data from Tape1 and Tape2 and use those Tapes to sort the larger chunks of data that we’ve created.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1abac460-8dda-8081-8e80-f85a94e4d45b" class="code"><code class="language-JavaScript">Tape1 Tape2     Tape3 Tape4
+r1234 r5678  &lt;- r1&amp;r2 r3&amp;r4
+						 &lt;-	r5&amp;r6 r7&amp;r8</code></pre><p id="1abac460-8dda-807c-9e3d-dc556223f1de" class="">One last step and we’ve merged all the data:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1abac460-8dda-8033-9c86-f4d0aaeaa004" class="code"><code class="language-JavaScript">Tape1 Tape2    Tape3
+r1234 r5678 -&gt; r12345678</code></pre><p id="1aeac460-8dda-808b-86c2-ff8e3feb3f9f" class="">We know we’re finished, because we only put data into a single tape before it ran out.</p><h3 id="1abac460-8dda-80a2-addc-d49e7f000d09" class="">4-way (pair assignment):</h3><p id="1abac460-8dda-8081-92db-fff8fafb3eba" class="">Similar to above, just with more tapes. Here we merge 4 streams at once, this reduces the number of merging steps.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1abac460-8dda-809d-a0b3-f708b5ef4a8d" class="code"><code class="language-JavaScript">Tape1 Tape2 Tape3 Tape4     Tape5 Tape6 Tape7 Tape8
+ r1    r2    r3    r4   -&gt;  r1234 r5678 ...
+ r5    r6    r7    r8
+ ...</code></pre><h3 id="1abac460-8dda-8001-a7b5-d7406f63ba87" class="">What merging technique do we use?</h3><p id="1acac460-8dda-8093-b14e-ce47c1d61082" class="">How you merge the runs is up to you, but it must adhere to the following:</p><p id="1abac460-8dda-8021-b159-eb9ceeb3115e" class="">We pull <strong>only the head value</strong> of each run that is being merged into memory and compare them. The smallest is written to a tape, then is replaced by a value from <strong>the same run</strong> that it came from. This continues until all/both of the current runs that are being merged have been emptied.</p><p id="1abac460-8dda-80e7-acb1-e4ad8e4ede1a" class="">This means we need to<strong> keep track of how many values we have read from each run. </strong></p><p id="1acac460-8dda-8034-b25f-d80309139152" class="">There are a couple of methods I would suggest: </p><ul id="1acac460-8dda-8089-9844-e61bdcc7f53a" class="bulleted-list"><li style="list-style-type:disc">For 2-way merges, just compare the two values directly using an if/else statement.</li></ul><ul id="1acac460-8dda-809f-8201-fc91f6de5746" class="bulleted-list"><li style="list-style-type:disc">For 4-way merges, make use of javas built-in priority queue.</li></ul><p id="1aeac460-8dda-807b-83f9-fdd7161d2479" class="">What happens if we don’t keep track of how many elements we’ve pulled out of each run?</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1aeac460-8dda-8015-9fd4-c60314d4fb4b" class="code"><code class="language-Java">// Image we are doing a 2-way merge with runs of length 2.
+// Here we aren&#x27;t keeping track of how many elements we&#x27;re pulling from each run.
+// So we are just pulling the smallest value from either tape for 2x run length.
+
+T1   T2     T3   T4    T5 // &lt;- Even though all the runs are in order, the output isn&#x27;t.
+1    7      1    7     1
+2    8      2    8     2
+            3    5     3
+3    5      4    6     4
+4    6                 7
+                       8
+                       5
+                       6
+                       
+// This is why we need to keep track of how many elements we pull from each run.
+// So we keep a counter for each run so we know when it&#x27;s over.
+// When one run has been drained, we append the remaining elements from its counterpart.
+// Note that this counter will double after each merge.
+
+T1   T2     T3   T4    T5 // &lt;- Now it&#x27;s in order.
+1    7      1    3     1
+2    8      2    4     2
+            7    5     3
+3    5      8    6     4
+4    6                 5
+                       6
+                       7
+                       8</code></pre><h3 id="1acac460-8dda-80d5-a5fd-da97d32195ea" class="">Assignment usage:</h3><p id="1acac460-8dda-8024-bf1e-c52f92d7c917" class="">The program must be <a href="http://XSort.java">XSort.java</a> and take two command-line arguments. The first being the length of the initial runs, the second being whether it is a 2-way or 4-way sort.</p><p id="1aeac460-8dda-809c-9878-d7b56a1c67d7" class=""><strong>If the second argument isn’t provided, the program must instead write the runs to standard output.</strong></p><p id="1acac460-8dda-807b-9cba-ea51fdf42e41" class="">Input must be able to be piped in using the command below:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1acac460-8dda-8001-8350-e6a7afbf84b9" class="code"><code class="language-Java">// The | operator will send the output from the first program to the system 
+// input of the second.
+
+// The &gt; operator will write the output of the preceding program to a file.
+
+// Example 1: one argument provided:
+// Output: Will only output the initial runs into one file, skipping the merge step.
+cat MobyDick.txt | java XSort 64 &gt; runs.txt
+
+// Example 2: two arguments provided, 2-way (for 4-way, replace the 2 with 4):
+// Output: Will output the fully sorted and merged file.
+cat MobyDick.txt | java XSort 64 2 &gt; moby.sorted
+</code></pre><p id="1acac460-8dda-806a-a870-cf9f9bb7b41b" class="">Although… If you are working in a pair you can provide two files if you want to split the workload to be able to work more independently without having to look at/try to comprehend your partners code. </p><p id="1acac460-8dda-8092-9063-f8d03b949cba" class="">Say <a href="http://XSplit.java">XSplit.java</a> and <a href="http://XMerge.java">XMerge.java</a>. The first program should create the initial runs, the second should merge the runs together. But as it says on the assignment outline, you will need to provide some script or a third <a href="http://XSort.java">XSort.java</a> file that will run them both for the marker. Please provide a readme file if you do something like this.</p><h3 id="1acac460-8dda-80f9-9955-c3649598765a" class="">Some example code:</h3><p id="1acac460-8dda-80e0-b386-ef9a891512ec" class="">The code below demonstrates how to use a scanner to read the input that is piped in, as well as a brief demonstration on how to use string compare on those two lines to sort them.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1acac460-8dda-8019-936e-ea1485290e4b" class="code"><code class="language-Java">import java.util.Scanner;
+
+public class SystemInAndSort {
+    public static void main(String[] args) {
+        // Create a Scanner object to read input from System.in
+        Scanner scanner = new Scanner(System.in);
+
+        // Read two lines of input
+        String line1 = scanner.nextLine();
+        String line2 = scanner.nextLine();
+
+        // Compare the two lines using String.compareTo()
+        if (line1.compareTo(line2) &lt; 0) {
+            // line1 comes before line2 lexicographically, print line1 first
+            System.out.println(line1);
+            System.out.println(line2);
+        } else {
+            // line2 comes before line1 lexicographically, print line2 first
+            System.out.println(line2);
+            System.out.println(line1);
+        }
+        
+        scanner.close();
+    }</code></pre><h3 id="1abac460-8dda-80a3-9805-d427e7cd2db8" class="">Additional assignment notes:</h3><ul id="1acac460-8dda-80ea-8405-ceb1824d2f2d" class="bulleted-list"><li style="list-style-type:disc">If you are doing the assignment solo and you still want to try your hand at a 4-way merge, feel free. Just make sure you attach a readme specifying that you’ve done this.</li></ul><ul id="1acac460-8dda-8066-aa24-ddadfcb146e3" class="bulleted-list"><li style="list-style-type:disc">For an extra challenge: Create your program so that it is a true k-way merge, such that it can split into and merge from 2 to n tapes where n is some arbitrary limit that you set. Note that if you do this it will only be tested on 4-way, but it’s just a good exercise if you want an extra challenge.</li></ul><h2 id="1aeac460-8dda-80ee-91a0-ccbc8e018e3a" class="">Other content from this week:</h2><p id="1aeac460-8dda-8012-a488-c38c6ee464a5" class="">
+</p><p id="1aeac460-8dda-80d2-87e1-d6c5bbfac368" class="">There were a couple of complexity facts that were mixed in with the assignment lectures:</p><ul id="1aeac460-8dda-80fb-9e38-eb2ddcf3431e" class="bulleted-list"><li style="list-style-type:disc">That quick sort and merge sort are log linear algorithms (n log n).</li></ul><ul id="1aeac460-8dda-807d-8b18-e9c442d596b1" class="bulleted-list"><li style="list-style-type:disc">Insertion sort - tends toward linear as the amount of already sorted data increases.</li></ul><h3 id="1aeac460-8dda-800b-9f16-cc763b643160" class="">Polyphase sort merge:</h3><p id="1aeac460-8dda-8066-b418-d8d589b56246" class="">This will likely be on a test, so you need to know how to do this. </p><p id="1aeac460-8dda-8014-ab6c-e43274e6591f" class="">Merge the runs into the available tape until one of the input tapes empties, repeat until only one tape has data in it.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1aeac460-8dda-80ee-845e-ef030046bfe2" class="code"><code class="language-Java">T1      T2     T3     T4     T5     T6
+8(10)   8(10)  7(10)  6(10)  4(10)  0
+4(10)   4(10)  3(10)  2(10)  0      4(50)
+2(10)   2(10)  1(10)  0      2(90)  2(50)
+1(10)   1(10)  0      1(170) 1(90)  1(50)
+0       0      1(330) 0      0      0</code></pre><p id="1aeac460-8dda-80b9-8b2b-e916505e56e5" class="">The problem with polyphase is figuring out the ideal distribution of runs at the beginning.</p><p id="1afac460-8dda-80de-83d8-feffd9454842" class="">
+</p><p id="1aeac460-8dda-8032-869b-c3cc53a65dee" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
