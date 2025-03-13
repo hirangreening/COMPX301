@@ -1,0 +1,24 @@
+Adding more lines of text will help us verify the sorting functionality.
+Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.
+Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi.
+Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.
+Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Hello everyone, this is my test file of test.
+How razorback-jumping frogs can level six piqued gymnasts!
+Im writing alot here so that I can check if there are any missing characters after running my code
+Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula.
+Jackdaws love my big sphinx of quartz.
+Let's include a variety of words and phrases to make the test comprehensive.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi.
+Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.
+Pack my box with five dozen liquor jugs.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+The five boxing wizards jump quickly.
+The quick brown fox jumps over the lazy dog.
+This is some additional dummy text to help test the XSort Java program.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+We need to ensure that the text is long enough to provide a thorough test.
