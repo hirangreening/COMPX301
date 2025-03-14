@@ -13,7 +13,7 @@ public class test {
     public static void main(String[] args) {
 
         // array of test data
-        String[] testData = {"apple", "orange", "banana", "grape", "kiwi"};
+        String[] testData = {"apple", "orange", "banana", "grape", "strawberry"};
 
         // Create a new heap
         Heap heap = new Heap(testData.length);
