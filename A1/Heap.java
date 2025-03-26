@@ -129,14 +129,8 @@ public class Heap {
      * @param index the index of the element to sift up.
      */
     private void siftUp(int index) {
-
-        // while index is greater than 0 and parent is less than index
-        while (index > 0 && heapArray[parent(index)].compareTo(heapArray[index]) < 0) {
-
-            // swap parent and index
+        while (index > 0 && heapArray[parent(index)].compareTo(heapArray[index]) > 0) {
             swap(parent(index), index);
-
-            // set index to parent
             index = parent(index);
         }
     }
@@ -147,36 +141,21 @@ public class Heap {
      * @param index the index of the element to sift down.
      */
     private void siftDown(int index) {
-
-        // set largest to index
-        int largest = index;
-
-        // set left and right to left and right children
+        int smallest = index;
         int left = leftChild(index);
         int right = rightChild(index);
 
-        // if left is less than size and left is greater than largest
-        if (left < size && heapArray[left].compareTo(heapArray[largest]) > 0) {
-
-            // set largest to left
-            largest = left;
+        if (left < size && heapArray[left].compareTo(heapArray[smallest]) < 0) {
+            smallest = left;
         }
 
-        // if right is less than size and right is greater than largest
-        if (right < size && heapArray[right].compareTo(heapArray[largest]) > 0) {
-
-            // set largest to right
-            largest = right;
+        if (right < size && heapArray[right].compareTo(heapArray[smallest]) < 0) {
+            smallest = right;
         }
 
-        // if largest is not equal to index
-        if (largest != index) {
-
-            // swap index and largest
-            swap(index, largest);
-
-            // sift down largest
-            siftDown(largest);
+        if (smallest != index) {
+            swap(index, smallest);
+            siftDown(smallest);
         }
     }
 

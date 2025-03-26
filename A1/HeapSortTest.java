@@ -6,7 +6,7 @@ public class HeapSortTest {
     public static void main(String[] args) {
         try {
             // Read the input file
-            BufferedReader reader = new BufferedReader(new FileReader("MobyDick.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("test.txt"));
             List<String> lines = new ArrayList<>();
             String line;
 
@@ -25,14 +25,14 @@ public class HeapSortTest {
             heap.heapsort();
 
             // Write the sorted output to a new file
-            BufferedWriter writer = new BufferedWriter(new FileWriter("HeapSortedMobyDick.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("HeapSortedTest.txt"));
             for (String sortedLine : heap.getHeapArray()) {
                 writer.write(sortedLine);
                 writer.newLine();
             }
             writer.close();
 
-            System.out.println("Heapsort completed successfully. Sorted data written to HeapSortedMobyDick.txt");
+            System.out.println("Heapsort completed successfully. Sorted data written to HeapSortedTest.txt");
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }

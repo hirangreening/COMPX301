@@ -1,0 +1,32 @@
+])
+[
+We need to ensure that the text is long enough to provide a thorough test.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+This is some additional dummy text to help test the XSort Java program.
+The quick brown fox jumps over the lazy dog.
+The five boxing wizards jump quickly.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Pack my box with five dozen liquor jugs.
+Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.
+Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Let's include a variety of words and phrases to make the test comprehensive.
+Jackdaws love my big sphinx of quartz.
+Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula.
+Im writing alot here so that I can check if there are any missing characters after running my code
+How razorback-jumping frogs can level six piqued gymnasts!
+Hello everyone, this is my test file of test.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.
+Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.
+Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi.
+Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.
+Adding more lines of text will help us verify the sorting functionality.
+.,,4 [kf2efj2f-0j2ekk;]
+*)(razorback
+       $)*!@#
+
+
+

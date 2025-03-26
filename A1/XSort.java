@@ -2,16 +2,12 @@
 // Name: Hiran Greening
 
 // Import statements
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 
 /**
- * This code reads plain text input from standard input, creates initial runs
+ * This code reads plain text input from standard input, creates initial runs,
  * and
  * performs a balanced k-way merge sort on the runs.
  */
@@ -19,96 +15,155 @@ public class XSort {
 
     /**
      * The main method reads the input from standard input, sorts the lines, and
-     * writes the sorted
-     * lines to standard output.
+     * writes the sorted lines to standard output.
      * 
      * @param args the command line arguments where args[0] is the run length, and
      *             args[1] is the merge factor (2 or 4).
      */
     public static void main(String[] args) {
-
-        // Check if the correct number of arguments have been passed
-        if (args.length != 2) {
-
-            // Print usage message and exit
-            System.out.println("Usage: java XSort <runlength> <mergefactor>");
+        // Check and validate command line arguments
+        if (args.length < 1 || args.length > 2) {
+            System.err.println("Usage: java XSort <runLength> [mergeFactor]");
             System.exit(1);
         }
 
-        // Parse the run length and merge factor
-        int runLength = Integer.parseInt(args[0]);
-        int mergeFactor = Integer.parseInt(args[1]);
-
-        // Check if the run length is within the valid range
-        if (runLength < 64 || runLength > 1024) {
-
-            // Print usage message and exit
-            System.out.println("Error: Run length must be between 64 and 1024.");
-            System.out.println("Usage: java XSort <runlength> <mergefactor>");
-            System.exit(1);
-        }
-
-        // Check if the merge factor is valid
-        if (mergeFactor != 2 && mergeFactor != 4) {
-
-            // Print usage message and exit
-            System.out.println("Error: Merge factor must be 2 or 4.");
-            System.out.println("Usage: java XSort <runlength> <mergefactor>");
-            System.exit(1);
-        }
-
-        // TRY-CATCH block to read the input from standard input, sort the lines, and
-        // write the sorted
-        // lines to standard output
+        int runLength;
         try {
+            // Parse run length and validate range
+            runLength = Integer.parseInt(args[0]);
+            if (runLength < 64 || runLength > 1024) {
+                throw new IllegalArgumentException("Run length must be between 64 and 1024.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
+            return;
+        }
 
-            // Create reader and writer objects
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-            List<String> lines = new ArrayList<>();
-            String line;
-            int lineCount = 0;
-
-            // Read the content from standard input
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-                lineCount++;
-                if (lineCount == runLength) {
-                    writeRunToOutput(lines, writer);
-                    lines.clear();
-                    lineCount = 0;
+        int mergeFactor = 0; // Default to no merging
+        if (args.length == 2) {
+            try {
+                // Parse merge factor and validate value
+                mergeFactor = Integer.parseInt(args[1]);
+                if (mergeFactor != 2 && mergeFactor != 4) {
+                    throw new IllegalArgumentException("Merge factor must be 2 or 4.");
                 }
+            } catch (IllegalArgumentException e) {
+                System.err.println("Error: " + e.getMessage());
+                System.exit(1);
+                return;
             }
+        }
 
-            // Write remaining lines if any
-            if (!lines.isEmpty()) {
-                writeRunToOutput(lines, writer);
+        try {
+            // Step 1: Create initial runs
+            List<String> runFiles = createInitialRuns(runLength);
+
+            // Step 2: Perform merging if mergeFactor is provided
+            if (mergeFactor > 0) {
+                performMerge(runFiles, mergeFactor);
             }
-
-            // Close the writer
-            writer.close();
-
-            // Print success message
-            System.out.println("Initial runs have been created successfully.");
         } catch (IOException e) {
-
-            // Print error message
-            System.out.println("Error: An error occurred while creating initial runs.");
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
         }
     }
 
-    private static void writeRunToOutput(List<String> lines, BufferedWriter writer) throws IOException {
-        // Create a Heap and sort the data
+    /**
+     * Reads lines from standard input, creates sorted runs of the specified length,
+     * and writes each run to a separate temporary file.
+     * 
+     * @param runLength The length of each run.
+     * @return A list of file paths to the temporary files containing the sorted
+     *         runs.
+     * @throws IOException If an I/O error occurs.
+     */
+    private static List<String> createInitialRuns(int runLength) throws IOException {
+        // Create a BufferedReader to read from standard input
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        List<String> lines = new ArrayList<>();
+        List<String> runFiles = new ArrayList<>();
+        String line;
+
+        // Read input line by line and create runs
+        while ((line = reader.readLine()) != null) {
+            lines.add(line);
+            if (lines.size() == runLength) {
+                // Sort and write a run when the specified length is reached
+                String runFile = writeSortedRun(lines);
+                runFiles.add(runFile);
+                lines.clear(); // Clear lines for the next run
+            }
+        }
+
+        // Write any remaining lines as a final run
+        if (!lines.isEmpty()) {
+            String runFile = writeSortedRun(lines);
+            runFiles.add(runFile);
+        }
+
+        // Log the paths of created run files
+        System.out.println("Initial runs created:");
+        for (String runFile : runFiles) {
+            System.out.println(runFile);
+        }
+
+        return runFiles;
+    }
+
+    /**
+     * Sorts a list of lines using heapsort and writes the sorted lines to a
+     * specified directory.
+     * 
+     * @param lines The list of lines to sort.
+     * @return The path to the file containing the sorted run.
+     * @throws IOException If an I/O error occurs.
+     */
+    private static String writeSortedRun(List<String> lines) throws IOException {
+        // Log the unsorted lines
+        System.out.println("Unsorted lines: " + lines);
+
+        // Create a heap and sort the lines
         Heap heap = new Heap(lines.size());
-        heap.heapify(lines.toArray(new String[0])); // Convert list to array and heapify
+        for (String line : lines) {
+            heap.insert(line); // Insert all lines into the heap
+        }
         heap.heapsort(); // Sort the heap
 
-        // Write the sorted data from the heap's array to the output
-        for (String sortedLine : heap.getHeapArray()) { // Use the getter to access heapArray
-            writer.write(sortedLine);
-            writer.write(System.lineSeparator());
+        // Reverse the sorted lines for A-Z order
+        String[] sortedLines = Arrays.stream(heap.getHeapArray())
+                .filter(Objects::nonNull) // Remove null values
+                .toArray(String[]::new);
+        Collections.reverse(Arrays.asList(sortedLines)); // Reverse for A-Z order
+        System.out.println("Sorted lines: " + Arrays.toString(sortedLines));
+
+        // Specify the directory for saving run files
+        File directory = new File("/home/hiran/Documents/Trimester A 2025/COMPX301/A1/runs");
+        if (!directory.exists()) {
+            directory.mkdirs(); // Create the directory if it doesn't exist
         }
+
+        // Create the run file in the specified directory
+        File runFile = File.createTempFile("run_", ".txt", directory);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(runFile))) {
+            for (String line : sortedLines) {
+                writer.write(line); // Write each line to the file
+                writer.newLine();
+            }
+        }
+
+        // Return the path of the run file
+        return runFile.getAbsolutePath();
     }
 
+    /**
+     * Placeholder for merging logic.
+     * 
+     * @param runFiles    The list of sorted run files.
+     * @param mergeFactor The number of ways to merge (2 or 4).
+     * @throws IOException If an I/O error occurs.
+     */
+    private static void performMerge(List<String> runFiles, int mergeFactor) throws IOException {
+        System.out.println("Merging functionality not yet implemented.");
+    }
 }
