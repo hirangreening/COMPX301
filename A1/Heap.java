@@ -56,12 +56,12 @@ public class Heap {
      * @return the root element.
      */
     public String remove() {
-
+                    
         // Check if the heap is empty
         if (size == 0) {
 
-            // Throw an exception
-            throw new RuntimeException("Heap is empty");
+            // return null, exit gracefully
+            return null;
         }
 
         //  set the root element

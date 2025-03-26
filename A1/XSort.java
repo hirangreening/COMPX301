@@ -102,10 +102,12 @@ public class XSort {
             runFiles.add(runFile);
         }
 
-        // Log the paths of created run files
-        System.out.println("Initial runs created:");
-        for (String runFile : runFiles) {
-            System.out.println(runFile);
+        // After creating all runs
+        if (runFiles.isEmpty()) {
+            System.out.println("No runs created. The input file is empty.");
+        } else {
+            // Verify all runs for sorting and line count
+            verifyRuns(runFiles, runLength);
         }
 
         return runFiles;
@@ -121,7 +123,7 @@ public class XSort {
      */
     private static String writeSortedRun(List<String> lines) throws IOException {
         // Log the unsorted lines
-        System.out.println("Unsorted lines: " + lines);
+        // System.out.println("Unsorted lines: " + lines);
 
         // Create a heap and sort the lines
         Heap heap = new Heap(lines.size());
@@ -135,7 +137,7 @@ public class XSort {
                 .filter(Objects::nonNull) // Remove null values
                 .toArray(String[]::new);
         Collections.reverse(Arrays.asList(sortedLines)); // Reverse for A-Z order
-        System.out.println("Sorted lines: " + Arrays.toString(sortedLines));
+        // System.out.println("Sorted lines: " + Arrays.toString(sortedLines));
 
         // Specify the directory for saving run files
         File directory = new File("/home/hiran/Documents/Trimester A 2025/COMPX301/A1/runs");
@@ -166,4 +168,53 @@ public class XSort {
     private static void performMerge(List<String> runFiles, int mergeFactor) throws IOException {
         System.out.println("Merging functionality not yet implemented.");
     }
+
+    private static void verifyRuns(List<String> runFiles, int runLength) throws IOException {
+        boolean allValid = true;
+        List<String> errorMessages = new ArrayList<>();
+
+        for (String runFilePath : runFiles) {
+            File runFile = new File(runFilePath);
+            List<String> lines = Files.readAllLines(runFile.toPath());
+
+            // Check if the file is sorted correctly
+            boolean isSorted = true;
+            for (int i = 1; i < lines.size(); i++) {
+                if (lines.get(i - 1).compareTo(lines.get(i)) > 0) {
+                    isSorted = false;
+                    errorMessages.add("Sorting error in " + runFile.getName() + " at line " + i + ": '"
+                            + lines.get(i - 1) + "' > '" + lines.get(i) + "'");
+                    break;
+                }
+            }
+
+            // Check if the line count matches the expected value
+            if (lines.size() != runLength && runFiles.indexOf(runFilePath) != runFiles.size() - 1) {
+                // Non-final runs should have exactly runLength lines
+                allValid = false;
+                errorMessages.add("Line count mismatch in " + runFile.getName() + ": expected "
+                        + runLength + ", but got " + lines.size());
+            } else if (lines.size() > runLength) {
+                // Final run should not exceed the run length
+                allValid = false;
+                errorMessages.add("Line count exceeds run length in " + runFile.getName() + ": got "
+                        + lines.size() + " lines");
+            }
+
+            if (!isSorted) {
+                allValid = false;
+            }
+        }
+
+        // Print final validation results
+        if (allValid) {
+            System.out.println("All runs are valid. Sorting and line count are correct for all files.");
+        } else {
+            System.err.println("Validation failed for the following runs:");
+            for (String error : errorMessages) {
+                System.err.println(error);
+            }
+        }
+    }
+
 }
