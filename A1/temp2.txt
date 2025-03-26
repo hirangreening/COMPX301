@@ -1,0 +1,20 @@
+
+
+       $)*!@#
+.,,4 [kf2efj2f-0j2ekk;]
+Adding more lines of text will help us verify the sorting functionality.
+Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi.
+Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.
+Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.
+Hello everyone, this is my test file of test.
+Im writing alot here so that I can check if there are any missing characters after running my code
+Jackdaws love my big sphinx of quartz.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+The quick brown fox jumps over the lazy dog.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+[
+apple
+banana
+中文 characters

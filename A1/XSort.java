@@ -45,8 +45,8 @@ public class XSort {
             try {
                 // Parse merge factor and validate value
                 mergeFactor = Integer.parseInt(args[1]);
-                if (mergeFactor != 2 && mergeFactor != 4) {
-                    throw new IllegalArgumentException("Merge factor must be 2 or 4.");
+                if (mergeFactor != 2) {
+                    throw new IllegalArgumentException("Merge factor must be 2 for solo solutions.");
                 }
             } catch (IllegalArgumentException e) {
                 System.err.println("Error: " + e.getMessage());
@@ -140,7 +140,7 @@ public class XSort {
         // System.out.println("Sorted lines: " + Arrays.toString(sortedLines));
 
         // Specify the directory for saving run files
-        File directory = new File("/home/hiran/Documents/Trimester A 2025/COMPX301/A1/runs");
+        File directory = new File("/tmp/runs");
         if (!directory.exists()) {
             directory.mkdirs(); // Create the directory if it doesn't exist
         }
@@ -166,7 +166,145 @@ public class XSort {
      * @throws IOException If an I/O error occurs.
      */
     private static void performMerge(List<String> runFiles, int mergeFactor) throws IOException {
-        System.out.println("Merging functionality not yet implemented.");
+        // Ensure the mergeFactor is valid
+        if (mergeFactor != 2) {
+            throw new IllegalArgumentException("Merge factor must be 2 for solo solutions.");
+        }
+
+        // Step 1: Distribute runs into two temporary files
+        File temp1 = new File("temp1.txt");
+        File temp2 = new File("temp2.txt");
+
+        try (BufferedWriter writer1 = new BufferedWriter(new FileWriter(temp1));
+                BufferedWriter writer2 = new BufferedWriter(new FileWriter(temp2))) {
+
+            boolean writeToFirst = true;
+            for (String runFile : runFiles) {
+                List<String> lines = Files.readAllLines(Paths.get(runFile));
+                BufferedWriter writer = writeToFirst ? writer1 : writer2;
+
+                for (String line : lines) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+
+                writeToFirst = !writeToFirst; // Alternate files
+            }
+        }
+
+        // Step 2: Perform merge passes until one sorted file remains
+        File finalSortedFile = performMergePasses(temp1, temp2);
+
+        // Step 3: Write the final sorted file to standard output
+        System.out.println("Final sorted file: " + finalSortedFile.getAbsolutePath());
+        System.out.println("Final sorted file size: " + finalSortedFile.length());
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(finalSortedFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line); // Write to standard output
+            }
+        }
+    }
+
+    private static File performMergePasses(File input1, File input2) throws IOException {
+        File output1 = new File("output1.txt");
+        File output2 = new File("output2.txt");
+
+        while (true) {
+            // Debugging: Print file sizes before merging
+            System.out.println("Checking termination condition...");
+            System.out.println("Input1 size: " + input1.length());
+            System.out.println("Input2 size: " + input2.length());
+            System.out.println("Output1 size: " + output1.length());
+            System.out.println("Output2 size: " + output2.length());
+
+            try (BufferedReader reader1 = new BufferedReader(new FileReader(input1));
+                    BufferedReader reader2 = new BufferedReader(new FileReader(input2));
+                    BufferedWriter writer1 = new BufferedWriter(new FileWriter(output1));
+                    BufferedWriter writer2 = new BufferedWriter(new FileWriter(output2))) {
+
+                mergeTwoFiles(reader1, reader2, writer1, writer2); // Perform merge for this pass
+            }
+
+            // Debugging: Print file sizes after merging
+            System.out.println("After merging:");
+            System.out.println("Input1 size: " + input1.length());
+            System.out.println("Input2 size: " + input2.length());
+            System.out.println("Output1 size: " + output1.length());
+            System.out.println("Output2 size: " + output2.length());
+
+            // Check if both input files are empty
+            if (isFileEmpty(input1) && isFileEmpty(input2)) {
+                System.out.println("Final merge completed!");
+                System.out.println("Output1 size: " + output1.length());
+                System.out.println("Output2 size: " + output2.length());
+                return output1.length() > 0 ? output1 : output2; // Return the non-empty output file
+            }
+
+            // Swap input/output for the next pass
+            File temp = input1;
+            input1 = output1;
+            output1 = temp;
+
+            temp = input2;
+            input2 = output2;
+            output2 = temp;
+
+            // Debugging: Print swapped file paths
+            System.out.println("Swapped files for the next pass:");
+            System.out.println("Input1: " + input1.getAbsolutePath());
+            System.out.println("Input2: " + input2.getAbsolutePath());
+            System.out.println("Output1: " + output1.getAbsolutePath());
+            System.out.println("Output2: " + output2.getAbsolutePath());
+        }
+    }
+
+    private static void mergeTwoFiles(BufferedReader reader1, BufferedReader reader2,
+            BufferedWriter writer1, BufferedWriter writer2) throws IOException {
+        String line1 = reader1.readLine();
+        String line2 = reader2.readLine();
+
+        boolean writeToFirst = true; // Alternate between writers
+
+        // Merge lines from both files
+        while (line1 != null && line2 != null) {
+            BufferedWriter writer = writeToFirst ? writer1 : writer2; // Alternate between output files
+            if (line1.compareTo(line2) <= 0) {
+                writer.write(line1);
+                writer.newLine();
+                line1 = reader1.readLine();
+            } else {
+                writer.write(line2);
+                writer.newLine();
+                line2 = reader2.readLine();
+            }
+            writeToFirst = !writeToFirst; // Alternate after each write
+        }
+
+        // Write remaining lines from file 1
+        while (line1 != null) {
+            BufferedWriter writer = writeToFirst ? writer1 : writer2;
+            writer.write(line1);
+            writer.newLine();
+            line1 = reader1.readLine();
+            writeToFirst = !writeToFirst;
+        }
+
+        // Write remaining lines from file 2
+        while (line2 != null) {
+            BufferedWriter writer = writeToFirst ? writer1 : writer2;
+            writer.write(line2);
+            writer.newLine();
+            line2 = reader2.readLine();
+            writeToFirst = !writeToFirst;
+        }
+
+        // Flush the writers explicitly to ensure all data is written
+        writer1.flush();
+        writer2.flush();
+
+        System.out.println("Merge completed for this pass.");
     }
 
     private static void verifyRuns(List<String> runFiles, int runLength) throws IOException {
@@ -208,12 +346,18 @@ public class XSort {
 
         // Print final validation results
         if (allValid) {
-            System.out.println("All runs are valid. Sorting and line count are correct for all files.");
+            System.err.println("All runs are valid. Sorting and line count are correct for all files.");
         } else {
             System.err.println("Validation failed for the following runs:");
             for (String error : errorMessages) {
                 System.err.println(error);
             }
+        }
+    }
+
+    private static boolean isFileEmpty(File file) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            return reader.readLine() == null; // Returns true if the file has no lines
         }
     }
 
