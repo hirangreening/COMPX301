@@ -25,6 +25,15 @@ public class Heap {
         // Create a new heap array
         this.heapArray = new String[capacity];
     }
+    
+    /** 
+    * Method to check if the heap is empty
+    *
+    * @return boolean
+    */
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
     /**
      * Inserts a value into the heap.
@@ -121,6 +130,7 @@ public class Heap {
             // Sift down the root element
             siftDown(0);
         }
+        size = heapArray.length; // Reset size after sorting
     }
 
     /**
