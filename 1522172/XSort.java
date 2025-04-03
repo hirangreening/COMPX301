@@ -218,8 +218,8 @@ public class XSort {
         // Reverse the array for A-Z order
         Collections.reverse(Arrays.asList(sortedLines));
 
-        // Specify the directory for saving run files
-        File directory = new File("/home/hiran/Documents/Trimester A 2025/COMPX301/A1/runs");
+        // Specify the directory for saving run files in the same directory as the code
+        File directory = new File(new File(System.getProperty("user.dir")), "runs");
 
         // Check if the directory exists
         if (!directory.exists()) {
@@ -282,9 +282,9 @@ public class XSort {
                     readers.add(new BufferedReader(new FileReader(runFiles.get(i + j))));
                 }
 
-                // Create a new run file for the merged output
+                // Create a new run file for the merged output in a "runs" directory within the working directory
                 File mergedRunFile = File.createTempFile("merged_run_", ".txt",
-                        new File("/home/hiran/Documents/Trimester A 2025/COMPX301/A1/runs"));
+                        new File(System.getProperty("user.dir"), "runs"));
 
                 // Write the merged run to the new run file
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(mergedRunFile))) {
