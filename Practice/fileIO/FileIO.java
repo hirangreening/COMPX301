@@ -7,7 +7,7 @@ import java.io.IOException;
 public class FileIO {
   public static void main(String[] args) {
 
-    String[] names = {"Jack", "Carl", "Jerry"};
+    String[] names = {"Jill", "Carl", "Jerry"};
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
       writer.write("Writing to a file.");
