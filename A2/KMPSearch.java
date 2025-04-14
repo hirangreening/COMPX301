@@ -8,6 +8,11 @@ import java.lang.*;
 import java.nio.*;
 
 
+/**
+ * KMP Search Algorithm
+ * This class implements the Knuth-Morris-Pratt (KMP) algorithm for substring search.
+ * 
+ */
 public class KMPSearch {
 
 
