@@ -28,7 +28,7 @@ public class KMPSearch {
         // Create map to hold the skip table
         Map<Character, int[]> skipTable = new HashMap<>();
 
-        // initialize variables for target and filename
+        // initialise variables for target and filename
         String target = "";
         String filename = "";
 
@@ -158,7 +158,7 @@ public class KMPSearch {
      * The skip values indicate how many characters to skip when a mismatch occurs.
      *
      * @param target The target string for which to generate the skip table.
-     * @return A map where each character in the target string is associated
+     * @return A map where each character in the target maps to an array of skip values.
      */
     private static Map<Character, int[]> generateSkipTable(String target) {
 
@@ -178,7 +178,7 @@ public class KMPSearch {
         // build prefix table for target
         int[] prefix = buildKmpTable(target);
 
-        // initialize skip table
+        // initialise skip table
         Map<Character, int[]> skipTable = new HashMap<>();
 
         // initalise set for unique characters
@@ -227,7 +227,7 @@ public class KMPSearch {
         // store default skips
         skipTable.put('*', defaultSkips);
 
-        // return skip table
+        // return the skip table
         return skipTable;
     }
 
@@ -273,34 +273,34 @@ public class KMPSearch {
      */
     private static void searchFileWithSkipTable(String filename, String target, Map<Character, int[]> skipTable) {
 
-        // try with resources to read the file (using BufferedReader and FileReader)
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-
-            // declare line variable
-            String line;
-
-            // while there are lines to read
-            while ((line = reader.readLine()) != null) {
-
-                // KMP search (using skip table) for the target in the line, storing indices in
-                // a list
-                List<Integer> indices = kmpSearchWithSkipTable(line, target, skipTable);
-
-                // for each index found
-                for (int index : indices) {
-
-                    // print the index (1-based) and the line
-                    System.out.println(index + " " + line);
+            // try with resources to read the file
+            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    
+                // declare line variable
+                String line;
+    
+                // while there are lines to read
+                while ((line = reader.readLine()) != null) {
+    
+                    // KMP search (using skip table) for the target in the line, storing indices in a list.
+                    List<Integer> indices = kmpSearchWithSkipTable(line, target, skipTable);
+    
+                    // if the target was found in the line
+                    if (!indices.isEmpty()) {
+    
+                        // print the 1-based index of the first occurrence and the line
+                        System.out.println(indices.get(0) + " " + line);
+                    }
                 }
+    
+                // catch any IO exceptions
+            } catch (IOException e) {
+    
+                // print error message
+                System.out.println("Error reading file: " + e.getMessage());
             }
-
-            // catch any IO exceptions
-        } catch (IOException e) {
-
-            // print error message
-            System.out.println("Error reading file: " + e.getMessage());
         }
-    }
+    
 
     /**
      * Performs KMP search on the given text using the provided pattern and skip
@@ -313,17 +313,17 @@ public class KMPSearch {
      */
     private static List<Integer> kmpSearchWithSkipTable(String text, String pattern, Map<Character, int[]> skipTable) {
 
-        // initialise list to hold indices
+        // initialise list for indices of pattern occurrences
         List<Integer> indices = new ArrayList<>();
 
-        // initialise variables for text and pattern lengths
+        // get text and pattern lengths
         int n = text.length();
         int m = pattern.length();
 
-        // set variable for text index
+        // initialise text index
         int i = 0;
 
-        // set variable for pattern index
+        // initialise pattern index
         int j = 0;
 
         // loop through text until the end
@@ -332,20 +332,20 @@ public class KMPSearch {
             // set pattern index to 0
             j = 0;
 
-            // loop through pattern until a mismatch or end of pattern
+            // while within pattern bounds and characters match
             while (j < m && i + j < n && text.charAt(i + j) == pattern.charAt(j)) {
 
-                // increment pattern index
+                // move to next character in pattern
                 j++;
             }
 
-            // if pattern index matches pattern length, a match is found
+            // check if full pattern is found
             if (j == m) {
 
                 // add index to list (1-based)
                 indices.add(i + 1);
 
-                // increment text index (move to next character)
+                // move to next possible starting position in text
                 i++;
 
                 // if mismatch occurs
