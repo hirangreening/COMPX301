@@ -112,17 +112,24 @@ class FSMCompiler {
             return expr;
         } else if (peek() == '.') {
             consume();
-            return newState("WC", stateCounter, +1);
+            return newState("WC", stateCounter, stateCounter + 1);  // Ensure correct transition
         } else if (peek() == '\\') {
-            consume();
+            consume();  // Discard the backslash
             if (!hasMore()) throw new Exception("Trailing backslash");
-            return newState(String.valueOf(consume()), stateCounter, -1);
+    
+            char escapedChar = consume();
+            if (isSpecial(escapedChar)) {
+                return newState(String.valueOf(escapedChar), stateCounter, stateCounter + 1);  // Treat as literal
+            } else {
+                return newState(String.valueOf(escapedChar), stateCounter, -1);  // Regular literal
+            }
         } else {
             char c = consume();
             if (isSpecial(c)) throw new Exception("Unescaped special character: " + c);
             return newState(String.valueOf(c), stateCounter, -1);
         }
     }
+    
 
     private int handleStar(int atom) {
         int branch = newBranchState(atom, stateCounter); // Create a branch state
