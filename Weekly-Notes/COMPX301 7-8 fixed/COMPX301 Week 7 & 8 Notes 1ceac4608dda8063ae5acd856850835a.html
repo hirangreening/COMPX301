@@ -1,0 +1,886 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>COMPX301 Week 7 &amp; 8 Notes</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ceac460-8dda-8063-ae5a-cd856850835a" class="page sans"><header><h1 class="page-title">COMPX301 Week 7 &amp; 8 Notes</h1><p class="page-description"></p></header><div class="page-body"><h2 id="1ceac460-8dda-8008-87dc-c216146372d0" class="">Regular Expressions cont.</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ceac460-8dda-8093-8e9f-cb75202f9399" class="code"><code class="language-Java">Some important terms to know:
+
+Expression (E) = start state of the machine (and of the context free grammar)
+Term (T)
+Factor (F)
+Vocab (V) = A literal
+
+Precedence of regex operations:
+
+() brackets -&gt; * closure -&gt; + alternation
+
+Rules:
+
+E -&gt; T   // An expression can be a term
+E -&gt; TE  // Or it can be a term followed by another expression (Concatenation)
+
+T -&gt; F   // A term can be a factor
+T -&gt; F*  // A term can be a factor 0 or more times (Closure)
+T -&gt; F+F // A term can be one of two factors (Alternation)
+
+F -&gt; V   // A factor can be a literal
+F -&gt; (E) // A factor can be a whole expression enclosed in brackets</code></pre><p id="1ceac460-8dda-80f9-956a-f4ab9a5565fb" class="">
+</p><h2 id="1ceac460-8dda-80de-8035-feff1d282aa8" class="">Representing an example with a parse tree (derivation):</h2><p id="1ceac460-8dda-8085-8eb1-d51ef9a8b4b2" class="">if we take the regex a(b+c)*d, we can create a parse tree from the bottom up to see how the recursive calls would be made by the code. <strong>It’s probably a good idea to know how to draw a parse tree when given a set of rules like the ones above and a regular expression 🙂</strong></p><p id="1e8ac460-8dda-8045-8c2f-f144a989be53" class="">
+</p><p id="1e8ac460-8dda-804e-b984-c43c4dcd04b6" class="">Here is a parse tree that I pulled from google with the matching grammar on the side:</p><figure id="1e6ac460-8dda-801a-ad5b-e17a45b1accf" class="image"><a href="pt.jpg"><img style="width:549.9739990234375px" src="pt.jpg"/></a></figure><p id="1ceac460-8dda-803e-8f4b-e8a64c035660" class="">Doing this is called bottom-up parsing, or data-driven parsing.</p><p id="1e5ac460-8dda-80aa-b55c-d06ea4bfa0f4" class="">
+</p><p id="1ceac460-8dda-80d0-99b2-f9d5eec71221" class="">We are going to build a top-down, depth first parser.<strong> It’s called a Left-Recursive Descent Parser.</strong></p><p id="1e5ac460-8dda-80cc-b047-d408bb96f132" class="">
+</p><p id="1e5ac460-8dda-80d0-983f-f8fcb19a30ba" class="">There are also:</p><ul id="1e5ac460-8dda-8036-ba86-e0dd306d8c56" class="bulleted-list"><li style="list-style-type:disc">Width-first parsing expands each possible node at each level.</li></ul><ul id="1e5ac460-8dda-8003-9830-d5717ed03c79" class="bulleted-list"><li style="list-style-type:disc">Depth-first parsing expands fully down one path first, then backtracks if required.</li></ul><p id="1ceac460-8dda-8044-98ce-ece5d5dfb63d" class="">
+</p><p id="1ceac460-8dda-80c0-980c-fa7b767cb933" class="">We want this parser to build the corresponding finite state machine. We can build the machine while the parser is running. This turns our parser into a FSM compiler.</p><p id="1ceac460-8dda-80cf-89f2-d17156acbf14" class="">
+</p><p id="1ceac460-8dda-80d3-a119-d60aeda92aa0" class="">To do this we need several arrays and a global integer value called “state” which starts at 1 and represents the next state to be built.</p><table id="1ceac460-8dda-80aa-b1cf-c751ef8a4e61" class="simple-table"><tbody><tr id="1ceac460-8dda-802c-9642-c676e7c4e16b"><td id="lkav" class="">stateNum/index</td><td id="TcU;" class=""></td><td id="|Tf?" class=""></td><td id="}ljB" class=""></td><td id="yeKJ" class=""></td><td id="q^{Z" class=""></td><td id="eEgx" class=""></td></tr><tr id="1ceac460-8dda-803f-b698-fecab98beb4f"><td id="lkav" class="">char ch</td><td id="TcU;" class=""></td><td id="|Tf?" class=""></td><td id="}ljB" class=""></td><td id="yeKJ" class=""></td><td id="q^{Z" class=""></td><td id="eEgx" class=""></td></tr><tr id="1ceac460-8dda-8051-8896-ffe9730ca141"><td id="lkav" class="">int next1</td><td id="TcU;" class=""></td><td id="|Tf?" class=""></td><td id="}ljB" class=""></td><td id="yeKJ" class=""></td><td id="q^{Z" class=""></td><td id="eEgx" class=""></td></tr><tr id="1e5ac460-8dda-80ba-b180-ce3966a27f3e"><td id="lkav" class="">int next2</td><td id="TcU;" class=""></td><td id="|Tf?" class=""></td><td id="}ljB" class=""></td><td id="yeKJ" class=""></td><td id="q^{Z" class=""></td><td id="eEgx" class=""></td></tr></tbody></table><h2 id="1e5ac460-8dda-8089-b8da-d825a0c66eb3" class="">Pseudo C-ish code example:</h2><p id="1e5ac460-8dda-8014-9287-c5d4504f0570" class="">Here is a pseudo-code example of the left-recursive parser/compiler. This is code that Tony has shown in the lectures and this structure must be followed for the parser/compiler in the assignment. Note that this code is incomplete and also doesn’t follow the order of precedence that was given for the assignment specs, it is up to you to modify it so that it is functional and follows the assignment specifications.</p><p id="1e5ac460-8dda-80fe-b4a1-f5d9995953fc" class="">
+</p><p id="1ceac460-8dda-8012-8ba1-c604099689db" class="">The setState function is used to set values in the array.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ceac460-8dda-80b3-9dd7-d5b1b965db96" class="code"><code class="language-Java">setState(int s, char c, int n1, int n2) {
+  ch[s] = c;
+  next1[s] = n1;
+  next2[s] = n2;
+}</code></pre><p id="1ceac460-8dda-80ff-a5fb-c134d9672550" class="">
+</p><p id="1ceac460-8dda-80e4-a267-de1368ec1b89" class="">Parser modified to start building our compiler.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ceac460-8dda-8054-899f-d229e36d9b10" class="code"><code class="language-Java">main() {
+  str p = &quot;a(b+c)*d&quot;;   // The regex to parse
+  int state = 1;
+  int j = 0;
+  setState            // j is the index to where we are looking in the string
+
+  expression();
+}
+
+int expression() {
+  int r;
+  r = term();            // Return the start state of the next machine
+  if (j == p.length - 1) 
+	  return;              // No more input
+	if (isVocab(p[j]) || p[j] == &#x27;(&#x27;)
+    expression();        // We are looking at another expression (concat)
+  else if (j == p.length - 1)
+    setState(state, &#x27;!&#x27;, -1, -1); // Set the final state.
+  else 
+    error();
+  return r;
+}
+
+int term() {
+  int f = factor();  
+  if (p[j] != &#x27;*&#x27; &amp;&amp; p[j] != &#x27;+&#x27;)
+	  return f;
+	else if (p[j] == &#x27;*&#x27;) // We see a closure
+	  setState(state, &#x27;BR&#x27;, f, state + 1) 
+	  state++;
+	  j++;
+	  return state-1;
+  else if (p[j] == &#x27;+&#x27;) // We see + which means &quot;one or more&quot;.
+    j++;                   
+    factor();      
+	  return;
+  return;                // T -&gt; F
+}
+
+int factor() {
+  if (isVocab(p[j]))     // Check if the current character is a valid vocab character
+    setState(state, p[j], state + 1, state + 1);
+    state++;
+    j++;                 // F -&gt; V
+    return state - 1;
+  if (p[j] == &#x27;(&#x27;)       // We are seeing another expression
+    int r;               // this is going to be our start of the next expression
+    j++;                 // F -&gt; (E)
+    r = expression();
+    if (p[j] != &#x27;)&#x27;)     // The expression did not return with a closed bracket
+      error();           // so it&#x27;s an error
+    j++;
+    return r;            // Return the start of the next state
+  else
+    error();             // factor must be a literal or a &#x27;(&#x27;, if not its an error
+}</code></pre><p id="1e5ac460-8dda-8025-afc6-ca71e290d081" class="">
+</p><h2 id="1e5ac460-8dda-80c7-86d0-d2fe3c8844d1" class="">Important things to consider for the assignment:</h2><p id="1e5ac460-8dda-8003-9555-de0013c04b7f" class="">
+</p><p id="1e5ac460-8dda-803b-bc70-e3a8c0f7edec" class="">The order of precedence:</p><ul id="1e5ac460-8dda-80e1-aa00-ead51f964528" class="bulleted-list"><li style="list-style-type:disc">escaped characters (i.e. symbols preceded by \)</li></ul><ul id="1e5ac460-8dda-80a9-bc8d-c885d66ee26b" class="bulleted-list"><li style="list-style-type:disc">parentheses (i.e. the most deeply nested regexps have the highest precedence)</li></ul><ul id="1e5ac460-8dda-8080-8dd4-df5d1fc6d1ac" class="bulleted-list"><li style="list-style-type:disc">repetition/option operators (i.e. * and ? and +)</li></ul><ul id="1e5ac460-8dda-80c8-aea6-ca8d865197f2" class="bulleted-list"><li style="list-style-type:disc">concatenation</li></ul><ul id="1e5ac460-8dda-805c-b3b2-fb8e060f5b9c" class="bulleted-list"><li style="list-style-type:disc">alternation (i.e. | )</li></ul><p id="1e5ac460-8dda-808b-821e-c950cd5456da" class="">
+</p><p id="1e5ac460-8dda-8085-8d4e-e61aa9cdb23e" class="">Escaped characters: </p><p id="1e5ac460-8dda-8074-a47b-c6962049b4f0" class="">Anything preceded by a “\” character will be treated as a literal. This relates to characters that usually have some meaning in the regex such as: * ? + ( ) \ and .</p><p id="1e8ac460-8dda-808e-a47b-c1265e7e80f8" class="">
+</p><p id="1e8ac460-8dda-80d5-9751-dec0a05797e8" class="">Wildcard symbol:</p><p id="1e8ac460-8dda-80c6-8f85-e6554845e6d4" class="">the period “.” is a wildcard symbol that can match any literal (single character).</p><p id="1e5ac460-8dda-80de-99b4-d93620231a10" class="">
+</p><p id="1e5ac460-8dda-8066-9ff3-e79f0872ec73" class="">Parentheses: </p><p id="1e5ac460-8dda-80df-aa20-c9a645719367" class="">Anything within parentheses should be treated as its own expression and should be processed first before moving on.</p><p id="1e5ac460-8dda-8096-bfad-f519dcdbce9b" class="">
+</p><p id="1e5ac460-8dda-80f1-be48-fda09af0bd12" class="">Repetition/option operators (* ? +):</p><p id="1e5ac460-8dda-80c1-997d-ce36924fe5d2" class="">The order at which you process these shouldn’t really matter too much. Your assignment won’t be tested on badly formed expressions like “ab+?c”.</p><p id="1e8ac460-8dda-809a-a618-ced5b621e840" class="">What these mean (as per assignment outline):</p><ul id="1e8ac460-8dda-803d-8735-fad6bbec5c01" class="bulleted-list"><li style="list-style-type:disc">* zero or more occurrences of the previous FSM</li></ul><ul id="1e8ac460-8dda-8090-985a-ef90bf52c8d7" class="bulleted-list"><li style="list-style-type:disc">? zero or one occurrences of the previous FSM</li></ul><ul id="1e8ac460-8dda-8029-a433-f0563a70aa3e" class="bulleted-list"><li style="list-style-type:disc">+ one or more occurrences of the previous FSM </li></ul><p id="1e5ac460-8dda-80bb-af6c-f31ebdf7158d" class="">
+</p><p id="1e5ac460-8dda-8012-bddd-e1733462b710" class="">Concatenation:</p><p id="1e5ac460-8dda-800c-924f-fa41e3134b02" class="">Joining two smaller regular expression together i.e “abc”.</p><p id="1e5ac460-8dda-80aa-9b93-d5155446f394" class="">
+</p><p id="1e5ac460-8dda-8010-8985-c17755f69f9f" class="">Alternation: </p><p id="1e5ac460-8dda-8044-85af-d0aa993b5e53" class="">The “or” statement is applied last.</p><p id="1e5ac460-8dda-8047-a461-c7b32ed70403" class="">
+</p><h2 id="1e5ac460-8dda-8036-a021-c5dde15f5fbd" class="">Concatenation/Alternation (important).</h2><p id="1e5ac460-8dda-80da-9f38-d50db81be366" class="">Be careful about the precedence here as this isn’t what was described in the lectures.</p><p id="1e5ac460-8dda-8015-8d94-e2846ac67772" class="">Because concatenation is done before alternation is means that if you gave a regex such as “abc|def” to your program it should be treated as<strong> “(abc)|(def)”</strong>. This differs from how it was described in lectures which would treat it as: “ab(c|d)ef”. So be careful with this!</p><p id="1e5ac460-8dda-80eb-b8ba-f0aa82060d94" class="">
+</p><h2 id="1e5ac460-8dda-801e-af73-e06972ba1877" class="">Making your life easier/edge cases:</h2><p id="1e5ac460-8dda-80dd-a5ab-fc4a1b05ddc4" class="">I would recommend adding a final branching state to various operations within your regex, and I will explain why:</p><p id="1e5ac460-8dda-80e3-b79e-ff0a3aacb7b8" class="">
+</p><p id="1e5ac460-8dda-80b2-ad28-d6aaad145ab3" class="">For the | operator (using the regex a(b|c)d):</p><table id="1e5ac460-8dda-8094-996d-cfbe77cf76bf" class="simple-table"><tbody><tr id="1e5ac460-8dda-8070-bba6-c13e2925a661"><td id="@Oyj" class="">state num</td><td id="qp&lt;=" class="" style="width:51px">1</td><td id="_{_C" class="" style="width:49px">2</td><td id="gLKO" class="" style="width:48px">3</td><td id=":_Qp" class="" style="width:49px">4</td><td id="FcPv" class="" style="width:50px">5</td><td id="z`R^" class="" style="width:50px">6</td><td id="u_eB" class="" style="width:49px">7</td><td id="{YY;" class="" style="width:48px">8</td></tr><tr id="1e5ac460-8dda-809e-821a-c0bdf4aedde6"><td id="@Oyj" class="">char ch</td><td id="qp&lt;=" class="" style="width:51px">BR</td><td id="_{_C" class="" style="width:49px">a</td><td id="gLKO" class="" style="width:48px">b</td><td id=":_Qp" class="" style="width:49px">BR</td><td id="FcPv" class="" style="width:50px">c</td><td id="z`R^" class="" style="width:50px">BR</td><td id="u_eB" class="" style="width:49px">d</td><td id="{YY;" class="" style="width:48px">BR</td></tr><tr id="1e5ac460-8dda-80bd-a148-ef4206641b5f"><td id="@Oyj" class="">int next1</td><td id="qp&lt;=" class="" style="width:51px">2</td><td id="_{_C" class="" style="width:49px">4</td><td id="gLKO" class="" style="width:48px">6</td><td id=":_Qp" class="" style="width:49px">3</td><td id="FcPv" class="" style="width:50px">6</td><td id="z`R^" class="" style="width:50px">7</td><td id="u_eB" class="" style="width:49px">8</td><td id="{YY;" class="" style="width:48px">-1</td></tr><tr id="1e5ac460-8dda-8042-bbdc-f9984b8dfd0f"><td id="@Oyj" class="">int next2</td><td id="qp&lt;=" class="" style="width:51px">2</td><td id="_{_C" class="" style="width:49px">4</td><td id="gLKO" class="" style="width:48px">6</td><td id=":_Qp" class="" style="width:49px">5</td><td id="FcPv" class="" style="width:50px">6</td><td id="z`R^" class="" style="width:50px">7</td><td id="u_eB" class="" style="width:49px">8</td><td id="{YY;" class="" style="width:48px">-1</td></tr></tbody></table><p id="1e5ac460-8dda-80e6-b838-c78f5d437939" class="">Notice that there is an extra branching state where the literals effected by the | operator point to (state 6).</p><p id="1e5ac460-8dda-804f-a95a-c7d5898d0932" class="">This can make it easier to handle some certain cases such as “a((b|c)|d)”. One possible set of states for this regex is listed below:</p><p id="1e5ac460-8dda-809c-a0f4-e676c31abc4c" class="">
+</p><p id="1e5ac460-8dda-8041-8733-dff29211ae29" class=""><strong>Without adding the extra BR state after</strong></p><table id="1e5ac460-8dda-8019-8e74-c73715b6724d" class="simple-table"><tbody><tr id="1e5ac460-8dda-8020-892c-db97a8bed446"><td id="WZgP" class="">state num</td><td id="WAf:" class="" style="width:50px">1</td><td id="tH=K" class="" style="width:48px">2</td><td id="]ktV" class="" style="width:44px">3</td><td id="]E}N" class="" style="width:44px">4</td><td id="AP]f" class="" style="width:41px">5</td><td id="}zF}" class="" style="width:49px">6</td><td id="SF]O" class="" style="width:48px">7</td><td id="&gt;pYg" class="" style="width:44px">8</td></tr><tr id="1e5ac460-8dda-8004-8f52-d3bc244aba55"><td id="WZgP" class="">char ch</td><td id="WAf:" class="" style="width:50px">BR</td><td id="tH=K" class="" style="width:48px">a</td><td id="]ktV" class="" style="width:44px">b</td><td id="]E}N" class="" style="width:44px">BR</td><td id="AP]f" class="" style="width:41px">c</td><td id="}zF}" class="" style="width:49px">BR</td><td id="SF]O" class="" style="width:48px">d</td><td id="&gt;pYg" class="" style="width:44px">BR</td></tr><tr id="1e5ac460-8dda-809c-b666-e367c1fb55f8"><td id="WZgP" class="">int next1</td><td id="WAf:" class="" style="width:50px">2</td><td id="tH=K" class="" style="width:48px">6</td><td id="]ktV" class="" style="width:44px">8</td><td id="]E}N" class="" style="width:44px">3</td><td id="AP]f" class="" style="width:41px">8</td><td id="}zF}" class="" style="width:49px">4</td><td id="SF]O" class="" style="width:48px">8</td><td id="&gt;pYg" class="" style="width:44px">-1</td></tr><tr id="1e5ac460-8dda-8054-aa6c-de74b7e59a17"><td id="WZgP" class="">int next2</td><td id="WAf:" class="" style="width:50px">2</td><td id="tH=K" class="" style="width:48px">6</td><td id="]ktV" class="" style="width:44px">8</td><td id="]E}N" class="" style="width:44px">5</td><td id="AP]f" class="" style="width:41px">8</td><td id="}zF}" class="" style="width:49px">7</td><td id="SF]O" class="" style="width:48px">8</td><td id="&gt;pYg" class="" style="width:44px">-1</td></tr></tbody></table><p id="1e5ac460-8dda-8076-8e38-d1886cee0c75" class="">Note that above without the extra BR state you are forced to update where states 3, 5 and 2 are pointing to (although this is not the only way to handle this). This can get very messy when there are a lot of nested parentheses and sequential alternations.</p><p id="1e5ac460-8dda-808e-8e86-f0fde73f0f9a" class="">
+</p><p id="1e5ac460-8dda-8009-aaec-c85cee6fc1bc" class=""><strong>With the extra BR state:</strong></p><table id="1e5ac460-8dda-8052-8683-fca8b584822b" class="simple-table"><tbody><tr id="1e5ac460-8dda-8045-8b34-f65e160121eb"><td id="VQm]" class="" style="width:76.9589677290483px">state num</td><td id="N;E{" class="" style="width:76.9589677290483px">1</td><td id="wbl@" class="" style="width:76.9589677290483px">2</td><td id="TSHX" class="" style="width:76.9589677290483px">3</td><td id="@_zz" class="" style="width:76.9589677290483px">4</td><td id="S@Db" class="" style="width:76.9589677290483px">5</td><td id=";yIX" class="" style="width:76.9589677290483px">6</td><td id="nwKx" class="" style="width:76.9589677290483px">7</td><td id="YxNd" class="" style="width:76.9589677290483px">8</td><td id="tNJC" class="" style="width:76.9589677290483px">9</td><td id="n[NI" class="" style="width:76.9589677290483px">10</td></tr><tr id="1e5ac460-8dda-80c2-80cc-d18eb31a2a18"><td id="VQm]" class="" style="width:76.9589677290483px">char ch</td><td id="N;E{" class="" style="width:76.9589677290483px">BR</td><td id="wbl@" class="" style="width:76.9589677290483px">a</td><td id="TSHX" class="" style="width:76.9589677290483px">b</td><td id="@_zz" class="" style="width:76.9589677290483px">BR</td><td id="S@Db" class="" style="width:76.9589677290483px">c</td><td id=";yIX" class="" style="width:76.9589677290483px">BR</td><td id="nwKx" class="" style="width:76.9589677290483px">BR</td><td id="YxNd" class="" style="width:76.9589677290483px">d</td><td id="tNJC" class="" style="width:76.9589677290483px">BR</td><td id="n[NI" class="" style="width:76.9589677290483px">BR</td></tr><tr id="1e5ac460-8dda-8018-87c8-cc6dbaa04505"><td id="VQm]" class="" style="width:76.9589677290483px">int next1</td><td id="N;E{" class="" style="width:76.9589677290483px">2</td><td id="wbl@" class="" style="width:76.9589677290483px">7</td><td id="TSHX" class="" style="width:76.9589677290483px">6</td><td id="@_zz" class="" style="width:76.9589677290483px">3</td><td id="S@Db" class="" style="width:76.9589677290483px">6</td><td id=";yIX" class="" style="width:76.9589677290483px">9</td><td id="nwKx" class="" style="width:76.9589677290483px">4</td><td id="YxNd" class="" style="width:76.9589677290483px">9</td><td id="tNJC" class="" style="width:76.9589677290483px">10</td><td id="n[NI" class="" style="width:76.9589677290483px">-1</td></tr><tr id="1e5ac460-8dda-8063-b530-de26958005e0"><td id="VQm]" class="" style="width:76.9589677290483px">int next2</td><td id="N;E{" class="" style="width:76.9589677290483px">2</td><td id="wbl@" class="" style="width:76.9589677290483px">7</td><td id="TSHX" class="" style="width:76.9589677290483px">6</td><td id="@_zz" class="" style="width:76.9589677290483px">5</td><td id="S@Db" class="" style="width:76.9589677290483px">6</td><td id=";yIX" class="" style="width:76.9589677290483px">9</td><td id="nwKx" class="" style="width:76.9589677290483px">8</td><td id="YxNd" class="" style="width:76.9589677290483px">9</td><td id="tNJC" class="" style="width:76.9589677290483px">10</td><td id="n[NI" class="" style="width:76.9589677290483px">-1</td></tr></tbody></table><p id="1e5ac460-8dda-8042-b271-c1f8dc4011d9" class="">As shown above: The only previous things we needed to go back and update were state 2 and state 6 to point to the new BR states. </p><p id="1e5ac460-8dda-804b-ae47-cbed30863c8f" class="">You can put these additional BR states onto the end of any expression that uses a branching state if you find it easier (* + ?)</p><p id="1e5ac460-8dda-8096-9df3-d828537008ac" class="">Keep in mind that there are several ways to do this, none of which are “wrong” if they work. </p><p id="1e5ac460-8dda-8020-b184-ffad2f66267b" class="">
+</p><p id="1e5ac460-8dda-805f-8b11-dd185db169f9" class="">Make sure you manually validate the following regex to make sure that your program is handling them correctly:</p><ul id="1e5ac460-8dda-8057-9221-e9b59476ae9b" class="bulleted-list"><li style="list-style-type:disc">((a|b)|c)</li></ul><ul id="1e6ac460-8dda-8060-b544-d2ca043dba68" class="bulleted-list"><li style="list-style-type:disc">((abc|def)|hij)</li></ul><ul id="1e5ac460-8dda-80fe-b68c-d13298b494fd" class="bulleted-list"><li style="list-style-type:disc">a*b*</li></ul><ul id="1e5ac460-8dda-800a-a221-f9831d7c3144" class="bulleted-list"><li style="list-style-type:disc">a+b+</li></ul><ul id="1e5ac460-8dda-80db-b42d-d54e4935a6b2" class="bulleted-list"><li style="list-style-type:disc">a?b?</li></ul><ul id="1e5ac460-8dda-8044-8efe-cde3e2de1424" class="bulleted-list"><li style="list-style-type:disc">Combinations of the above such as “(a|b)?c*” etc.</li></ul><p id="1e5ac460-8dda-8005-b3d1-e2832666fae5" class="">
+</p><h2 id="1e5ac460-8dda-80fb-b175-da31c4ad9f9f" class="">Searching:</h2><p id="1e5ac460-8dda-8099-93d5-fad79fd51992" class="">The searching side of things can be a bit easier than building the compiler/parser. </p><p id="1e5ac460-8dda-8009-bf02-f65f2d12a53b" class=""><strong>You must implement your own Dequeue class as described in the lectures. </strong>Do not use Java’s inbuilt Dequeue class. There are plenty of resources online that will describe how a dequeue class is coded.</p><p id="1e5ac460-8dda-805d-93f5-f0993587d613" class="">Watch the lectures pertaining to how to handle states using the dequeue class and emulate the behavior that was described.</p><p id="1e5ac460-8dda-80c3-9449-c462e5e57d0a" class="">
+</p><p id="1e5ac460-8dda-800e-b40f-e27d4fb32dfd" class="">Here is the section from week 6’s notes that covered the searching algorithm:</p><h2 id="1e5ac460-8dda-8028-9526-fb11c0778768" class="">Notes from week 6 about search:</h2><p id="1e5ac460-8dda-8035-b2b1-ff6df3021182" class="">To manage the possible and current states we use a double ended queue:</p><p id="1e5ac460-8dda-8086-bfb5-fe366fec2779" class="">This type of data structure allows you to add items to either the front or the end of the queue. For the purpose of this regex example, items will only ever be removed from the front.</p><p id="1e5ac460-8dda-80d8-aa2a-c12da334c2ac" class="">In this queue the current states will be looked at first, with possible next states being added to the end. The scan is a special object in the queue which separates the current and next states.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e5ac460-8dda-80da-86eb-e0c2cfb1c2af" class="code"><code class="language-Java">Double ended queue:
+First in, first out.
+
+With a scan seperating the current and next states.
+
+possible current
+
+  current state 1
+  current state 2
+---------------- Scan
+  next state 1
+  next state 2
+
+possible next</code></pre><p id="1e5ac460-8dda-809d-8983-fd46f189cc7e" class="">
+</p><p id="1e5ac460-8dda-808e-b5e5-cf78730b46f7" class="">The algorithm for this is as follows:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e5ac460-8dda-80d8-8fb1-db0fe424883f" class="code"><code class="language-Java">Pop possible current state // Imagine we have a variable that contains the 
+                           // current state
+If BR then push two possible curr states // Add to the front of the queue
+else push one possible curr state // Add next possible 
+if the state and the literal matches:
+	consume current character // Move to the next character
+	enqueue next state // Add the next state to the end of the queue
+if the queue is empty, we have failed // no current state matched the literal
+	restart from mark + 1 // mark is the index in the text where the regex starts
+else take possible next states, make them possible current states.</code></pre><h1 id="1e6ac460-8dda-8010-ac57-cee0c07e244c" class="">Dynamic programming:</h1><p id="1e6ac460-8dda-80b5-9c02-d7b2a6cbf9e3" class="">As Tony said in the lecture “If an optimum solution a problem of size n+1 consists of the solution for a problem of size n plus some constant amount of work, then a potential approach is dynamic programming”. This is called the “optimality principle”</p><h3 id="1e6ac460-8dda-80d9-ba15-f79a42e89b66" class="">Longest increasing sub-sequence</h3><p id="1e6ac460-8dda-807b-95a2-d2015cd62ffb" class="">His most basic example of this was the Longest Increasing sub-sequence. This is where we get given a set of unordered values and need to find the longest possible increasing sub-sequence while remaining in the original order.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6ac460-8dda-806a-a0eb-d40e9c90b15e" class="code"><code class="language-JavaScript">Longest increasing sub-sequence:
+
+Using memoization (looking up previous solutions).
+
+i = array index, X = value, L = longest increasing subsequence.
+i = [ 1    2      3    4    5    6    7 ]
+X = [1.47, 4.26, -3.1, 2.5, 8.6, 5.5, 9 ]
+L = [ 1  ,  1  ,   1 ,  1 ,  1 ,  1 , 1 ]
+
+We start with all ones because each item is the longest increasing sub-sequence of itself.
+
+i = array index, X = value, L = longest increasing subsequence.
+i = [ 1    2      3    4    5    6    7 ]
+X = [1.47, 4.26, -3.1, 2.5, 8.6, 5.5, 9 ]
+L = [ 1  ,  2  ,   1 ,  2 ,  2 ,  2 , 2 ]
+            ^           ^    ^    ^   ^
+            
+We then find the values that are larger than that at index 1 and increment their length
+
+And so on but this time starting from index 2.
+
+i = array index, X = value, L = longest increasing subsequence.
+i = [ 1    2      3    4    5    6    7 ]
+X = [1.47, 4.26, -3.1, 2.5, 8.6, 5.5, 9 ]
+L = [ 1  ,  2  ,   1 ,  2 ,  3 ,  3 , 3 ]
+                             ^    ^   ^
+
+And so on
+
+
+So we need to look at n + n-1 + n-2 + ... + 1 values (0.5n^2)</code></pre><h2 id="1e6ac460-8dda-803e-a86a-d628b0ad5e4d" class="">Pseudo-code for the above:</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6ac460-8dda-8071-b4fd-f29cc6d8cde1" class="code"><code class="language-JavaScript">function LIS(arr):
+  n = length of arr
+  L = array of size n, initialized to 1
+
+  for i from 1 to n-1:
+    for j from 0 to i-1:
+      if arr[i] &gt; arr[j]:
+        L[i] = max(dp[i], L[j] + 1)
+
+  return max value in dp</code></pre><p id="1e6ac460-8dda-80a1-9769-d9e6d6f5808d" class="">He spoke about DNA and how to find the most similar matches between two “strings”. This is called “sequence similarity”.</p><p id="1e6ac460-8dda-8019-be5a-ed0a0e095f34" class="">If we want to find the minimum number of edits (removals and insertions) to turn a string into the target string, this is called the “minimum edit distance”. This comes up in things like predictive text and autocorrecting.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6ac460-8dda-8089-ab9e-f61fb10cca94" class="code"><code class="language-JavaScript">Example:
+
+x = begin
+y = end
+
+Both have an &#x27;e&#x27; and &#x27;n&#x27;
+
+to remove &#x27;b&#x27; &#x27;g&#x27; &#x27;i&#x27;, and insert &#x27;d&#x27;
+
+This is a minimum edit distance of 4
+
+The same goes in reverse.
+
+The MED of x -&gt; y is == MED of y -&gt; x. Symmetrical.</code></pre><p id="1e6ac460-8dda-80c2-b5f4-d3221a4ab6ed" class="">Term: </p><p id="1e6ac460-8dda-8004-9cc7-f97919743a74" class="">Sub-sequence: A sub-sequence can be derived from another sequence by deleting some or none of the elements in between but always maintaining the relative order of elements in the original sequence.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6ac460-8dda-803f-acdc-f6e0344482e7" class="code"><code class="language-JavaScript">What if we wanted to find the longest common sub-sequence of two strings?
+
+We could have a method called LCS, or Longest common sub-sequence.
+
+We can use this to find the MED.
+
+If we find the LCS using some function like k = LCS(x, y),
+
+Then the MED(x, y) is equal to:
+
+length(x) + length(y) - 2k</code></pre><p id="1e6ac460-8dda-809d-9a20-c8643456e5a9" class="">
+</p><h2 id="1e6ac460-8dda-80ac-9a5f-da871a8f1f00" class="">Calculating the LCS</h2><p id="1e7ac460-8dda-8027-aea9-fc9728039024" class="">Here is some pseudocode for a dynamic programming problem similar to what was described in Fridays lecture (in the sense that it uses a 2d array). This will determine what the length of the longest common subsequence is (although it won’t actually find that sequence). But it can be used to find the minimum edit distance using the equation above.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6ac460-8dda-8083-88cb-f2191a5e39b5" class="code"><code class="language-JavaScript">function LCS(X, Y):
+  m = length of X
+  n = length of Y
+  L = 2D array of size (m+1) x (n+1), initialized to 0
+
+  for i from 1 to m:
+	  for j from 1 to n:
+      if X[i-1] == Y[j-1]:
+        L[i][j] = L[i-1][j-1] + 1
+      else:
+        L[i][j] = max(dp[i-1][j], L[i][j-1])
+
+  return dp[m][n]</code></pre><p id="1e7ac460-8dda-802d-b764-c8bf98a8eb1c" class="">Starts with a 2d array of integers like below, follows the algorithm above (indexes in parentheses):</p><table id="1e7ac460-8dda-8034-9357-c8c95497cd78" class="simple-table"><tbody><tr id="1e7ac460-8dda-8070-b6cb-c2516225022e"><td id="Bddv" class="" style="width:88.85714285714286px"></td><td id="\a?]" class="" style="width:88.85714285714286px"></td><td id="YjaW" class="" style="width:88.85714285714286px">b</td><td id="kwXS" class="" style="width:88.85714285714286px"> e</td><td id="A@iu" class="" style="width:88.85714285714286px">g</td><td id="={tP" class="" style="width:88.85714285714286px">i</td><td id="DM`j" class="" style="width:88.85714285714286px">n</td></tr><tr id="1e7ac460-8dda-80fb-af40-ddd31d77acc2"><td id="Bddv" class="" style="width:88.85714285714286px"></td><td id="\a?]" class="" style="width:88.85714285714286px">0</td><td id="YjaW" class="" style="width:88.85714285714286px">0</td><td id="kwXS" class="" style="width:88.85714285714286px">0</td><td id="A@iu" class="" style="width:88.85714285714286px">0</td><td id="={tP" class="" style="width:88.85714285714286px">0</td><td id="DM`j" class="" style="width:88.85714285714286px">0</td></tr><tr id="1e7ac460-8dda-801d-a20c-ca59dfe68e5e"><td id="Bddv" class="" style="width:88.85714285714286px">e</td><td id="\a?]" class="" style="width:88.85714285714286px">0</td><td id="YjaW" class="" style="width:88.85714285714286px">0</td><td id="kwXS" class="" style="width:88.85714285714286px">1</td><td id="A@iu" class="" style="width:88.85714285714286px">1</td><td id="={tP" class="" style="width:88.85714285714286px">1</td><td id="DM`j" class="" style="width:88.85714285714286px">1</td></tr><tr id="1e7ac460-8dda-8092-97b0-c22b542cd031"><td id="Bddv" class="" style="width:88.85714285714286px">n</td><td id="\a?]" class="" style="width:88.85714285714286px">0</td><td id="YjaW" class="" style="width:88.85714285714286px">0</td><td id="kwXS" class="" style="width:88.85714285714286px">1</td><td id="A@iu" class="" style="width:88.85714285714286px">1</td><td id="={tP" class="" style="width:88.85714285714286px">1</td><td id="DM`j" class="" style="width:88.85714285714286px">2</td></tr><tr id="1e7ac460-8dda-8031-817e-d26435251f63"><td id="Bddv" class="" style="width:88.85714285714286px">d</td><td id="\a?]" class="" style="width:88.85714285714286px">0</td><td id="YjaW" class="" style="width:88.85714285714286px">0</td><td id="kwXS" class="" style="width:88.85714285714286px">1</td><td id="A@iu" class="" style="width:88.85714285714286px">1</td><td id="={tP" class="" style="width:88.85714285714286px">1</td><td id="DM`j" class="" style="width:88.85714285714286px">2</td></tr></tbody></table></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
