@@ -74,6 +74,8 @@ class FSMCompiler {
             if (!s.symbol.equals("BR") && s.next1 == -1) {
                 s.next1 = finalState;
                 s.next2 = finalState;
+            } else if (!s.symbol.equals("BR") && s.next2 == -1) {
+                s.next2 = s.next1;
             }
         }
 
@@ -132,7 +134,15 @@ class FSMCompiler {
     }
 
     private int parseTerm() throws Exception {
-        return parseFactor();
+        int first = parseFactor();
+        int last = first;
+        // Concatenate as long as the next char is not | or )
+        while (hasMore() && peek() != '|' && peek() != ')') {
+            int next = parseFactor();
+            linkStates(getLastState(last), next);
+            last = next;
+        }
+        return first;
     }
 
     private int parseFactor() throws Exception {
