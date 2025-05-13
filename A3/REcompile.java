@@ -39,7 +39,7 @@ public class REcompile {
 class FSMCompiler {
     private final String regex;
     private int pos = 0;
-    private int stateCounter = 1;
+    private int stateCounter = 0;
     private final List<State> fsm = new ArrayList<>();
 
     static class State {
@@ -58,35 +58,81 @@ class FSMCompiler {
 
     public FSMCompiler(String regex) {
         this.regex = regex;
-        fsm.add(new State(0, "BR", -1, -1)); // Initial state
     }
 
     public List<State> compile() throws Exception {
+        int initial = newState("BR", -1, -1);
         int startState = parseExpression();
-        fsm.get(0).next1 = startState; // Set start state
-        fsm.add(new State(stateCounter, "", -1, -1)); // Final state
+        int finalState = newState("BR", -1, -1);
+
+        State s0 = getState(initial);
+        s0.next1 = startState;
+        s0.next2 = startState;
+
+        // Patch all non-branch states with next1 == -1 to finalState
+        for (State s : fsm) {
+            if (!s.symbol.equals("BR") && s.next1 == -1) {
+                s.next1 = finalState;
+                s.next2 = finalState;
+            }
+        }
+
+        // Patch all branch states (except initial and final) with next1 == -1 to finalState
+        for (State s : fsm) {
+            if (s.symbol.equals("BR") && s.stateNum != initial && s.stateNum != finalState && s.next1 == -1) {
+                s.next1 = finalState;
+                s.next2 = finalState;
+            }
+        }
+
         return fsm;
     }
 
     private int parseExpression() throws Exception {
+        if (hasMore() && peek() == '|') {
+            throw new Exception("Unexpected | at start of expression");
+        }
         int left = parseTerm();
-        
         if (hasMore() && peek() == '|') {
             consume();
-            int right = parseExpression();
-            return newBranchState(left, right);
+
+            // --- FIX: Create branch state BEFORE alternatives ---
+            int branch = newBranchState(-1, -1); // Reserve the branch state number
+
+            int leftStart = left;
+            int rightStart = parseExpression();
+
+            // Set the branch state's transitions to the alternatives
+            State branchState = getState(branch);
+            branchState.next1 = leftStart;
+            branchState.next2 = rightStart;
+
+            // Create join state
+            int join = newState("BR", -1, -1);
+
+            // Patch left and right alternatives to point to join
+            patchToJoin(leftStart, join);
+            patchToJoin(rightStart, join);
+
+            return branch;
         }
         return left;
     }
 
+    // Helper to patch all end states of a branch to the join state
+    private void patchToJoin(int stateNum, int join) {
+        State s = getState(stateNum);
+        if (!s.symbol.equals("BR") && s.next1 == -1) {
+            s.next1 = join;
+            s.next2 = join;
+        } else if (s.symbol.equals("BR")) {
+            if (s.next1 != -1) patchToJoin(s.next1, join);
+            if (s.next2 != -1 && s.next2 != s.next1) patchToJoin(s.next2, join);
+        }
+    }
+
     private int parseTerm() throws Exception {
-        int first = parseFactor();
-        
-        if (hasMore() && peek() != ')' && peek() != '|') {
-            int second = parseTerm();
-            linkStates(first, second);  // Link properly
-        }        
-        return first;
+        return parseFactor();
     }
 
     private int parseFactor() throws Exception {
@@ -112,31 +158,27 @@ class FSMCompiler {
             return expr;
         } else if (peek() == '.') {
             consume();
-            return newState("WC", stateCounter, stateCounter + 1);  // Ensure correct transition
+            int wcState = newState("WC", -1, -1);
+            return wcState;
         } else if (peek() == '\\') {
-            consume();  // Discard the backslash
+            consume();
             if (!hasMore()) throw new Exception("Trailing backslash");
-    
             char escapedChar = consume();
-            if (isSpecial(escapedChar)) {
-                return newState(String.valueOf(escapedChar), stateCounter, stateCounter + 1);  // Treat as literal
-            } else {
-                return newState(String.valueOf(escapedChar), stateCounter, -1);  // Regular literal
-            }
+            int charState = newState(String.valueOf(escapedChar), -1, -1);
+            return charState;
         } else {
             char c = consume();
             if (isSpecial(c)) throw new Exception("Unescaped special character: " + c);
-            return newState(String.valueOf(c), stateCounter, -1);
+            int charState = newState(String.valueOf(c), -1, -1);
+            return charState;
         }
     }
-    
 
     private int handleStar(int atom) {
-        int branch = newBranchState(atom, stateCounter); // Create a branch state
-        linkStates(getLastState(atom), branch); // Ensure exit transition
+        int branch = newBranchState(atom, stateCounter);
+        linkStates(getLastState(atom), branch);
         return branch;
     }
-    
 
     private int handlePlus(int atom) {
         linkStates(getLastState(atom), atom);
@@ -164,16 +206,12 @@ class FSMCompiler {
     }
 
     private int getLastState(int start) {
-        int current = start;
-        int counter = 0;  // Prevent infinite looping
-        while (counter++ < fsm.size()) { 
-            State s = getState(current);
-            if (s.next1 == -1 && s.next2 == -1) return current;
-            current = (s.next1 != -1) ? s.next1 : s.next2;
-        }
-        return start;  // Fallback to prevent infinite recursion
+        State s = getState(start);
+        if (s.next1 == start || s.next2 == start) return start; // For loops
+        if (s.next1 == -1 && s.next2 == -1) return start;
+        if (s.next1 != -1) return getLastState(s.next1);
+        return getLastState(s.next2);
     }
-    
 
     private State getState(int stateNum) {
         for (State s : fsm) {
