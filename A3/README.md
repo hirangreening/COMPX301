@@ -1,23 +1,39 @@
-**Author**: Oleksandr Kashpir
-_**ID**_: 1637705</br>
-**Partner**: Hiran Greening
-_**ID**_: TBC</br>
-# REsearch
+**Author**: Hiran Greening  
+_**ID**_: 1522172  
+**Partner**: Oleksandr Kashpir  
+_**ID**_: 1637705  
+
+# REcompile
+
 ---
+
 ## Compilation
-The searcher implemention is done with multiple classes in a single source code file, `REsearch.java`. To compile it, just run:
+
+This compiler is implemented as multiple classes within a single file, `REcompile.java`.  
+To compile, use:
 ```
-javac REsearch.java
+javac REcompile.java
 ```
+
+---
+
 ## Usage
-This program must recieve lines through standard input to load a FSM from. These can be supplied in one of two recommended ways:
+
+The program takes a regular expression as a command-line argument and outputs the corresponding FSM to standard output.  
+To use it with the searcher, pipe the output into my partner's search program as follows:
 ```
 java REcompile "regexp" | java REsearch filename.txt
 ```
-To pipe them from the standard output of my partner's program for a specified regular expression "regexp".
+Here, `"regexp"` is your regular expression (in quotes), and `filename.txt` is the file to search.
+
+Alternatively, you can save the FSM output to a file and use:
 ```
-cat FSMlines.txt | java REcompile filename.txt
+cat FSMlines.txt | java REsearch filename.txt
 ```
-To instead pipe them from a text file.
+
+---
+
 ## Comments
-My implementation of a Deque is developed to work around a persistent SCAN node storing a SCAN value, which is defined by the constructor upon initialization. In my searcher, I chose to instantiate my DequeWithSCAN using the value of -2 for this, as -1 should be treated as a state number (representing the final state by agreement between my and Hiran).
+
+The Deque implementation in the searcher uses a persistent SCAN node, initialized with a value of -2.  
+This is to avoid confusion with -1, which is reserved as the final state indicator (by agreement between Hiran and Oleksandr).

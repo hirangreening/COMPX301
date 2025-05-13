@@ -294,7 +294,7 @@ class FSMCompiler {
             s.next1 = join;
             s.next2 = join;
 
-        // Otherwise, if this state is a branch state
+            // Otherwise, if this state is a branch state
         } else if (s.symbol.equals("BR")) {
 
             // check if first transition is set
@@ -353,7 +353,8 @@ class FSMCompiler {
         // Parse the next atom (a character, group, or wildcard)
         int atom = parseAtom();
 
-        // Check if there are more characters and the next character is a repetition operator
+        // Check if there are more characters and the next character is a repetition
+        // operator
         if (hasMore() && isRepetition(peek())) {
 
             // Consume the repetition operator (*, +, or ?)
@@ -400,7 +401,7 @@ class FSMCompiler {
                 // throw an exception
                 throw new Exception("Unmatched parentheses");
 
-                // consume the closing parentheses
+            // consume the closing parentheses
             consume();
 
             // return expression state
@@ -483,10 +484,12 @@ class FSMCompiler {
      */
     private int handlePlus(int atom) {
 
-        // Link the last state of the atom back to the atom itself to create a loop (one or more repetitions)
+        // Link the last state of the atom back to the atom itself to create a loop (one
+        // or more repetitions)
         linkStates(getLastState(atom), atom);
 
-        // Return the starting state of the atom as the entry point for the plus operation
+        // Return the starting state of the atom as the entry point for the plus
+        // operation
         return atom;
     }
 
@@ -655,7 +658,7 @@ class FSMCompiler {
      * @return True if the character is special, false otherwise.
      */
     private boolean isSpecial(char c) {
-        
+
         // Return true if the character is in the set of special characters
         return "*+?|().\\".indexOf(c) != -1;
     }
