@@ -92,18 +92,16 @@ public class REcompile {
  */
 class FSMCompiler {
 
-    // private instance variables
-
-    // The regex pattern to compile
+    // regex pattern to compile
     private final String regex;
 
-    // current position in the regex string
+    // current (parsing) position in the regex string
     private int pos = 0;
 
-    // counter for state numbers
+    // counter for assigning (unique) state numbers
     private int stateCounter = 0;
 
-    // list to hold the states of the FSM
+    // list of states representing the FSM
     private final List<State> fsm = new ArrayList<>();
 
     /**
@@ -113,15 +111,13 @@ class FSMCompiler {
      */
     static class State {
 
-        // private instance variables
-
-        // The state number
+        // Identifier for the state
         final int stateNum;
 
-        // symbol associated with the state
+        // Character or symbol linked to this state
         final String symbol;
 
-        // next state numbers for transitions
+        // Transition state numbers
         int next1;
         int next2;
 
@@ -157,188 +153,199 @@ class FSMCompiler {
             throw new IllegalArgumentException("Regex cannot be null or empty");
         }
 
-        // initalise with passed regex
+        // initalise regex field with provided value
         this.regex = regex;
     }
 
     /**
      * Compiles the regex pattern into a finite state machine (FSM).
+     * Creates an initial state, parses the regex to generate states, and links
+     * them.
+     * Ensures all states are connected to a final state.
      *
      * @return A list of states representing the FSM.
-     * @throws Exception If there is an error during compilation.
+     * @throws Exception If an error occurs during parsing or state creation.
      */
     public List<State> compile() throws Exception {
 
-        // set the initial state
+        // Create the initial state (branch state with no transitions)
         int initial = newState("BR", -1, -1);
 
-        // set the start state by parsing the regex expression
+        // Parse the regex expression to determine the start state
         int startState = parseExpression();
 
-        // set the final state (branch state with no transitions. -1
+        // Create the final state (branch state with no transitions)
         int finalState = newState("BR", -1, -1);
 
-        // initialise start state with the initial state
+        // Retrieve the initial state object
         State s0 = getState(initial);
 
-        // set transitions with the start state
+        // Set both transitions of the initial state to the start state
         s0.next1 = startState;
         s0.next2 = startState;
 
-        // for each state in the FSM
+        // Iterate through all states in the FSM
         for (State s : fsm) {
 
-            // check if the state is not the initial or final state
+            // If the state is not a branch and has no first transition
             if (!s.symbol.equals("BR") && s.next1 == -1) {
 
-                // set the next states to the final state
+                // Set both transitions to the final state
                 s.next1 = finalState;
                 s.next2 = finalState;
 
                 // If the state is not a branch and has no second transition
             } else if (!s.symbol.equals("BR") && s.next2 == -1) {
 
-                // set the next state to the first transition
+                // Set the second transition to the same as the first
                 s.next2 = s.next1;
             }
         }
 
-        // for each state in the FSM
+        // Iterate through all states again to handle branch states
         for (State s : fsm) {
 
-            // check if the state is a branch and not the initial or final state
+            // If the state is a branch and not the initial or final state
             if (s.symbol.equals("BR") && s.stateNum != initial && s.stateNum != finalState && s.next1 == -1) {
 
-                // set the next states to the final state
+                // Set both transitions to the final state
                 s.next1 = finalState;
                 s.next2 = finalState;
             }
         }
 
-        // return the FSM
+        // Return the compiled FSM as a list of states
         return fsm;
     }
 
     /**
-     * Parses the regex expression and builds the FSM.
+     * Parses a regex expression and constructs the corresponding FSM states.
+     * Handles alternation (|) by creating branch states and linking alternatives.
+     * Ensures proper error handling for unexpected or misplaced characters.
      *
      * @return The state number of the parsed expression.
-     * @throws Exception If there is an error during parsing.
+     * @throws Exception If there is an error during parsing, such as unexpected or
+     *                   unmatched characters.
      */
     private int parseExpression() throws Exception {
 
-        // check if expressiong starts with |
+        // Check if the expression starts with an unexpected '|'
         if (hasMore() && peek() == '|') {
 
-            // throw an exception
+            // Throw an exception for invalid syntax
             throw new Exception("Unexpected | at start of expression");
         }
 
-        // set the left state with the parsed term
+        // Parse the left-hand side of the expression as a term
         int left = parseTerm();
 
-        // check if expressiong starts with |
+        // Check if there is an alternation operator ('|')
         if (hasMore() && peek() == '|') {
 
-            // consume the | character
+            // Consume the '|' character to process the alternation
             consume();
 
             // Create a branch state with no transitions initially
             int branch = newBranchState(-1, -1);
 
-            // set left start with the left state
+            // Store the starting state of the left-hand side
             int leftStart = left;
 
-            // set right start with the parsed expression
+            // Parse the right-hand side of the expression recursively
             int rightStart = parseExpression();
 
-            // get and set the branch state
+            // Retrieve the branch state object
             State branchState = getState(branch);
 
-            // Set first transition of branch state to point to the left alternative
+            // Set the first transition of the branch state to the left alternative
             branchState.next1 = leftStart;
 
-            // set second transition of branch state to point to the right alternative
+            // Set the second transition of the branch state to the right alternative
             branchState.next2 = rightStart;
 
-            // initialise the join state with a new branch state
+            // Create a join state to merge the two alternatives
             int join = newState("BR", -1, -1);
 
-            // patch left start and right start to the join state
+            // Patch the left and right alternatives to the join state
             patchToJoin(leftStart, join);
             patchToJoin(rightStart, join);
 
-            // return branch
+            // Return the branch state as the entry point for the alternation
             return branch;
         }
 
-        // return left state
+        // Return the state number of the left-hand side if no alternation is present
         return left;
     }
 
     /**
-     * Patches the FSM to join the specified state to the given join state.
+     * Patches the FSM to connect a specified state to a given join state.
+     * Ensures that all outgoing transitions from the specified state lead to the
+     * join state.
+     * Handles both branch and non-branch states recursively.
      *
      * @param stateNum The state number to patch.
      * @param join     The join state number.
      */
     private void patchToJoin(int stateNum, int join) {
 
-        // Get the state object for the given state number
+        // Retrieve the state object for the given state number
         State s = getState(stateNum);
 
-        // If this state is not a branch and has no outgoing transitions
+        // If the state is not a branch and has no outgoing transitions
         if (!s.symbol.equals("BR") && s.next1 == -1) {
 
             // Set both transitions to point to the join state
             s.next1 = join;
             s.next2 = join;
 
-            // Otherwise, if this state is a branch state
+            // If the state is a branch state
         } else if (s.symbol.equals("BR")) {
 
-            // check if first transition is set
-            if (s.next1 != -1)
+            // Check if the first transition is set
+            if (s.next1 != -1) {
 
-                // recursively patch first transition to join state
+                // Recursively patch the first transition to the join state
                 patchToJoin(s.next1, join);
+            }
 
-            // check if second transition is set and is different from the first
-            if (s.next2 != -1 && s.next2 != s.next1)
+            // Check if the second transition is set and is different from the first
+            if (s.next2 != -1 && s.next2 != s.next1) {
 
-                // recursively patch second transition to join state
+                // Recursively patch the second transition to the join state
                 patchToJoin(s.next2, join);
+            }
         }
     }
 
     /**
-     * Parses a term in the regex expression.
+     * Parses a term in the regex expression and links its factors.
      *
-     * @return The state number of the parsed term.
-     * @throws Exception If there is an error during parsing.
+     * @return The state number of the first state in the term.
+     * @throws Exception If parsing fails.
      */
     private int parseTerm() throws Exception {
 
-        // set first state with the parsed factor
+        // Parse the first factor in the term and set it as the first state
         int first = parseFactor();
 
-        // set last state with first state
+        // Initialize the last state to the first state
         int last = first;
 
-        // while there are more characters and the next character is not | or )
+        // While there are more characters and the next character is not '|' or ')'
         while (hasMore() && peek() != '|' && peek() != ')') {
 
-            // set next state with the parsed factor
+            // Parse the next factor in the term
             int next = parseFactor();
 
-            // link the last state to the next state
+            // Link the last state to the next state
             linkStates(getLastState(last), next);
 
-            // set last state to the next state
+            // Update the last state to the next state
             last = next;
         }
 
-        // return the first state
+        // Return the first state of the term
         return first;
     }
 
@@ -380,128 +387,128 @@ class FSMCompiler {
 
     /**
      * Parses an atom in the regex expression.
+     * An atom can be a character, group, wildcard, or escaped character.
      *
      * @return The state number of the parsed atom.
-     * @throws Exception If there is an error during parsing.
+     * @throws Exception If parsing fails, such as unmatched parentheses or invalid
+     *                   escape sequences.
      */
     private int parseAtom() throws Exception {
 
-        // peek if the next character is opening parentheses
+        // Check if the next character is an opening parenthesis
         if (peek() == '(') {
 
-            // consume the opening parentheses
+            // Consume the opening parenthesis
             consume();
 
-            // parse the expression inside the parentheses
+            // Parse the expression inside the parentheses
             int expr = parseExpression();
 
-            // check if next character is not closing parentheses
-            if (peek() != ')')
+            // Ensure the next character is a closing parenthesis
+            if (peek() != ')') {
 
-                // throw an exception
+                // Throw an exception for unmatched parentheses
                 throw new Exception("Unmatched parentheses");
+            }
 
-            // consume the closing parentheses
+            // Consume the closing parenthesis
             consume();
 
-            // return expression state
+            // Return the state number of the parsed expression
             return expr;
 
-            // check if next character is period (wildcard)
+            // Check if the next character is a period (wildcard)
         } else if (peek() == '.') {
 
-            // consume the period character
+            // Consume the period character
             consume();
 
-            // create a wildcard state
-            int wcState = newState("WC", -1, -1);
+            // Create and return a wildcard state
+            return newState("WC", -1, -1);
 
-            // return wildcard state
-            return wcState;
-
-            // check if next character is double backslash
+            // Check if the next character is a backslash (escape sequence)
         } else if (peek() == '\\') {
 
-            // consume the backslash character
+            // Consume the backslash character
             consume();
 
-            // check if there are more characters
-            if (!hasMore())
+            // Ensure there are more characters to parse
+            if (!hasMore()) {
 
-                // throw an exception
+                // Throw an exception for a trailing backslash
                 throw new Exception("Trailing backslash");
+            }
 
-            // consume escaped character
+            // Consume the escaped character
             char escapedChar = consume();
 
-            // create a state for the escaped character
-            int charState = newState(String.valueOf(escapedChar), -1, -1);
+            // Create and return a state for the escaped character
+            return newState(String.valueOf(escapedChar), -1, -1);
 
-            // return character state
-            return charState;
+            // Handle a regular character
         } else {
 
-            // consume the character
+            // Consume the character
             char c = consume();
 
-            // check if character is a special character
-            if (isSpecial(c))
+            // Ensure the character is not a special regex character
+            if (isSpecial(c)) {
 
-                // throw an exception
+                // Throw an exception for unescaped special characters
                 throw new Exception("Unescaped special character: " + c);
+            }
 
-            // create a state for the character
-            int charState = newState(String.valueOf(c), -1, -1);
-
-            // return character state
-            return charState;
+            // Create and return a state for the character
+            return newState(String.valueOf(c), -1, -1);
         }
     }
 
     /**
-     * Handles the repetition operator '*' (Kleene star).
+     * Handles the Kleene star (*) repetition operator.
+     * Creates a branch state that loops back to the atom and links to the next
+     * state.
      *
      * @param atom The state number of the atom to apply the star operator to.
-     * @return The state number of the new branch state created.
+     * @return The state number of the new branch state.
      */
     private int handleStar(int atom) {
 
-        // create branch state with atom and state counter
+        // Create a branch state with the atom as the first transition
         int branch = newBranchState(atom, stateCounter);
 
-        // link the last state of the atom to the branch state
+        // Link the last state of the atom back to the branch state
         linkStates(getLastState(atom), branch);
 
-        // return the branch state
+        // Return the branch state
         return branch;
     }
 
     /**
-     * Handles the repetition operator '+' (Kleene plus).
+     * Handles the Kleene plus (+) operator.
+     * Ensures at least one occurrence of the atom by creating a loop.
      *
-     * @param atom The state number of the atom to apply the plus operator to.
-     * @return The state number of the new branch state created.
+     * @param atom The state number of the atom to loop.
+     * @return The starting state of the atom.
      */
     private int handlePlus(int atom) {
 
-        // Link the last state of the atom back to the atom itself to create a loop (one
-        // or more repetitions)
+        // Create a loop by linking the last state back to the atom
         linkStates(getLastState(atom), atom);
 
-        // Return the starting state of the atom as the entry point for the plus
-        // operation
+        // Return the starting state
         return atom;
     }
 
     /**
-     * Handles the repetition operator '?' (zero or one occurrence).
+     * Handles the '?' operator (optional).
+     * Creates a branch state to the atom or next state.
      *
-     * @param atom The state number of the atom to apply the optional operator to.
-     * @return The state number of the new branch state created.
+     * @param atom State number of the atom.
+     * @return State number of the new branch state.
      */
     private int handleOptional(int atom) {
 
-        // Create a branch state that can go to the atom or skip to the next state
+        // Create a branch state to the atom or next state
         return newBranchState(atom, stateCounter);
     }
 
@@ -549,40 +556,50 @@ class FSMCompiler {
         // Get the state object for the 'from' state
         State s = getState(from);
 
-        // If next1 is not set, set it to 'to'
+        // If next1 is not set
         if (s.next1 == -1)
+
+            // set it to 'to'
             s.next1 = to;
 
-        // Otherwise, if next2 is not set, set it to 'to'
+        // Otherwise, if next2 is not set
         else if (s.next2 == -1)
 
+            // set it to 'to'
             s.next2 = to;
     }
 
     /**
-     * Recursively finds the last state in a chain starting from 'start'.
+     * Gets the last state in a chain starting from the given state.
+     * Recursively traverses transitions to find the final state.
      *
      * @param start The starting state number.
      * @return The state number of the last state in the chain.
      */
     private int getLastState(int start) {
 
-        // Get the state object for the starting state
+        // Retrieve the state object for the given state number
         State s = getState(start);
 
-        // If the state loops to itself, return it (for loops)
+        // Check if the state loops to itself
         if (s.next1 == start || s.next2 == start)
+
+            // Return the state number if it loops to itself
             return start;
 
-        // If both transitions are unset, return this state
+        // Check if the state has no transitions
         if (s.next1 == -1 && s.next2 == -1)
+
+            // Return the state number if it has no transitions
             return start;
 
-        // If next1 is set, continue recursively from next1
+        // Check if the first transition is set
         if (s.next1 != -1)
+
+            // Recursively follow the first transition
             return getLastState(s.next1);
 
-        // Otherwise, continue recursively from next2
+        // Recursively follow the second transition
         return getLastState(s.next2);
     }
 
@@ -597,8 +614,10 @@ class FSMCompiler {
         // Iterate through all states in the FSM
         for (State s : fsm) {
 
-            // If the state number matches, return the state
+            // check if the state number matches
             if (s.stateNum == stateNum)
+
+                // return the state
                 return s;
         }
 
@@ -631,7 +650,7 @@ class FSMCompiler {
     /**
      * Checks if there are more characters to parse in the regex.
      *
-     * @return True if there are more characters, false otherwise.
+     * @return True if more characters, false otherwise.
      */
     private boolean hasMore() {
 
@@ -659,7 +678,7 @@ class FSMCompiler {
      */
     private boolean isSpecial(char c) {
 
-        // Return true if the character is in the set of special characters
+        // Return true if the character is a special regex character
         return "*+?|().\\".indexOf(c) != -1;
     }
 }
