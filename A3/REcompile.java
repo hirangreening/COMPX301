@@ -3,7 +3,9 @@
 
 // Import Statements
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * REcompile.java
@@ -187,19 +189,9 @@ class FSMCompiler {
 
         // for each state in the FSM
         for (State s : fsm) {
-
-            // check if the state is not the initial or final state
-            if (!s.symbol.equals("BR") && s.next1 == -1) {
-
-                // set the next states to the final state
-                s.next1 = finalState;
-                s.next2 = finalState;
-
-                // If the state is not a branch and has no second transition
-            } else if (!s.symbol.equals("BR") && s.next2 == -1) {
-
-                // set the next state to the first transition
-                s.next2 = s.next1;
+            if (!s.symbol.equals("BR")) {
+                if (s.next1 == -1) s.next1 = finalState;
+                if (s.next2 == -1) s.next2 = finalState;
             }
         }
 
@@ -226,48 +218,48 @@ class FSMCompiler {
      * @throws Exception If there is an error during parsing.
      */
     private int parseExpression() throws Exception {
-        if (hasMore() && peek() == '|') {
-            throw new Exception("Unexpected | at start of expression");
-        }
-
-        int left = parseTerm();
+        int term = parseTerm();
 
         // If alternation, handle it
         if (hasMore() && peek() == '|') {
             consume(); // consume '|'
 
-            // Create the branch state *before* parsing alternatives
-            int branch = newBranchState(-1, -1);
-
-            // Parse left and right alternatives
-            int leftAlt = left;
-            int rightAlt = parseExpression();
-
-            // Set branch transitions
-            getState(branch).next1 = leftAlt;
-            getState(branch).next2 = rightAlt;
+            // Parse the right alternative
+            int right = parseExpression();
 
             // Create a join state for both alternatives to end at
             int join = newState("BR", -1, -1);
 
             // Patch both alternatives to the join state
-            patchToJoin(leftAlt, join);
-            patchToJoin(rightAlt, join);
+            patchToJoin(term, join);
+            patchToJoin(right, join);
+
+            // Create a branch state that splits to left and right
+            int branch = newBranchState(term, right);
+
+            // DO NOT patch the branch state to the join state!
 
             return branch;
         }
 
-        return left;
+        return term;
     }
 
     /**
-     * Patches the last state in the chain starting from stateNum to point to join.
+     * Patches all states reachable from stateNum that have -1 transitions to point to join.
      */
     private void patchToJoin(int stateNum, int join) {
-        int last = getLastState(stateNum);
-        State s = getState(last);
-        s.next1 = join;
-        s.next2 = join;
+        Set<Integer> visited = new HashSet<>();
+        patchToJoinHelper(stateNum, join, visited);
+    }
+
+    private void patchToJoinHelper(int stateNum, int join, Set<Integer> visited) {
+        if (!visited.add(stateNum)) return;
+        State s = getState(stateNum);
+        if (s.next1 == -1) s.next1 = join;
+        else patchToJoinHelper(s.next1, join, visited);
+        if (s.next2 == -1) s.next2 = join;
+        else if (s.next2 != s.next1) patchToJoinHelper(s.next2, join, visited);
     }
 
     /**
@@ -277,27 +269,15 @@ class FSMCompiler {
      * @throws Exception If there is an error during parsing.
      */
     private int parseTerm() throws Exception {
-
-        // set first state with the parsed factor
         int first = parseFactor();
-
-        // set last state with first state
         int last = first;
 
-        // while there are more characters and the next character is not | or )
         while (hasMore() && peek() != '|' && peek() != ')') {
-
-            // set next state with the parsed factor
             int next = parseFactor();
-
-            // link the last state to the next state
-            linkStates(getLastState(last), next);
-
-            // set last state to the next state
+            patchToJoin(last, next); // Use patchToJoin for chaining
             last = next;
         }
 
-        // return the first state
         return first;
     }
 
@@ -329,7 +309,7 @@ class FSMCompiler {
                     return handlePlus(atom);
                 case '?':
                     // Handle zero or one occurrence (optional)
-                    return handleOptional(atom);
+                    return handleQuestion(atom);
             }
         }
 
@@ -424,14 +404,13 @@ class FSMCompiler {
      * @return The state number of the new branch state created.
      */
     private int handleStar(int atom) {
+        // Create a branch state that can either go to the atom or skip past the star
+        int branch = newBranchState(atom, -1);
 
-        // create branch state with atom and state counter
-        int branch = newBranchState(atom, stateCounter);
-
-        // link the last state of the atom to the branch state
+        // Link the last state of the atom back to the branch state (for repetition)
         linkStates(getLastState(atom), branch);
 
-        // return the branch state
+        // Return the branch state as the entry point for the star
         return branch;
     }
 
@@ -453,15 +432,24 @@ class FSMCompiler {
     }
 
     /**
-     * Handles the repetition operator '?' (zero or one occurrence).
+     * Handles the repetition operator '?' (question mark).
      *
-     * @param atom The state number of the atom to apply the optional operator to.
+     * @param atom The state number of the atom to apply the question mark operator to.
      * @return The state number of the new branch state created.
+     * @throws Exception If there is an error during handling.
      */
-    private int handleOptional(int atom) {
+    private int handleQuestion(int atom) throws Exception {
+        // Create a join state for both branches to rejoin
+        int join = newState("BR", -1, -1);
 
-        // Create a branch state that can go to the atom or skip to the next state
-        return newBranchState(atom, stateCounter);
+        // Patch the end of the atom chain to the join state
+        patchToJoin(atom, join);
+
+        // Create a branch state: next1 = atom, next2 = join (skip atom)
+        int branch = newBranchState(atom, join);
+
+        // Patch the join state to the final state later in compile()
+        return branch;
     }
 
     /**
@@ -504,18 +492,15 @@ class FSMCompiler {
      * @param to   The state number to link to.
      */
     private void linkStates(int from, int to) {
-
-        // Get the state object for the 'from' state
         State s = getState(from);
 
-        // If next1 is not set, set it to 'to'
-        if (s.next1 == -1)
-            s.next1 = to;
-
-        // Otherwise, if next2 is not set, set it to 'to'
-        else if (s.next2 == -1)
-
+        if (s.symbol.equals("BR") && s.next2 == -1 && s.next1 != -1) {
+            // Only patch next2 for branch states created by '?'
             s.next2 = to;
+        } else if (!s.symbol.equals("BR") && s.next1 == -1) {
+            // For normal states, patch next1 if it's unset
+            s.next1 = to;
+        }
     }
 
     /**
@@ -525,24 +510,28 @@ class FSMCompiler {
      * @return The state number of the last state in the chain.
      */
     private int getLastState(int start) {
+        return getLastStateHelper(start, new HashSet<>());
+    }
 
-        // Get the state object for the starting state
+    private int getLastStateHelper(int start, Set<Integer> visited) {
+        if (!visited.add(start)) {
+            // Already visited this state, avoid infinite loop
+            return start;
+        }
         State s = getState(start);
 
-        // If the state loops to itself, return it (for loops)
-        if (s.next1 == start || s.next2 == start)
-            return start;
-
-        // If both transitions are unset, return this state
         if (s.next1 == -1 && s.next2 == -1)
             return start;
 
-        // If next1 is set, continue recursively from next1
-        if (s.next1 != -1)
-            return getLastState(s.next1);
-
-        // Otherwise, continue recursively from next2
-        return getLastState(s.next2);
+        if (s.next1 != -1 && s.next1 != start) {
+            int last = getLastStateHelper(s.next1, visited);
+            if (last != s.next1) return last;
+        }
+        if (s.next2 != -1 && s.next2 != start) {
+            int last = getLastStateHelper(s.next2, visited);
+            if (last != s.next2) return last;
+        }
+        return start;
     }
 
     /**

@@ -1,0 +1,22 @@
+A. a (PASSED)
+B. ab (PASSED)
+C. aa*b (PASSED) - Fixed handling of '*' by improving handlestar and getlaststate methods.
+D. a?b (PASSED) - Corrected '?' logic in handleQuestion and ensured patching uses patchToJoin.
+E. a.a (PASSED)
+F. a.*b (PASSED)
+G. a\.b (PASSED)
+H. a\.*b (PASSED)
+I. ab|cd (PASSED) - Fixed alternation by patching both branches to a join state, not the branch node.
+J. a(b|c)d (PASSED) - Ensured parseTerm uses patchToJoin for chaining, not linkStates/getLastState.
+K. a(b\|c)d (PASSED)
+L. a(b|c)(de|fg)a (PASSED)
+M. ab*b?a (PASSED)
+N. g(a(b|c)a)|(de)g (PASSED)
+O. (bb|cc)?d*e\.\?\*\)|\(\)aa (PASSED)
+P. a(dd|ee)?a(gg|ff)*a (PASSED)
+Notes: 
+- Major fixes included using patchToJoin for all chaining in parseTerm, 
+- Recursively patching all dangling transitions in alternation and optionals,
+- Avoiding patching the branch node itself in alternation,
+- Ensuring repetition and optional operators correctly patch their subgraphs.
+All tests now pass after these changes.
