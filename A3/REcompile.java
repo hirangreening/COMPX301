@@ -226,89 +226,48 @@ class FSMCompiler {
      * @throws Exception If there is an error during parsing.
      */
     private int parseExpression() throws Exception {
-
-        // check if expressiong starts with |
         if (hasMore() && peek() == '|') {
-
-            // throw an exception
             throw new Exception("Unexpected | at start of expression");
         }
 
-        // set the left state with the parsed term
         int left = parseTerm();
 
-        // check if expressiong starts with |
+        // If alternation, handle it
         if (hasMore() && peek() == '|') {
+            consume(); // consume '|'
 
-            // consume the | character
-            consume();
-
-            // Create a branch state with no transitions initially
+            // Create the branch state *before* parsing alternatives
             int branch = newBranchState(-1, -1);
 
-            // set left start with the left state
-            int leftStart = left;
+            // Parse left and right alternatives
+            int leftAlt = left;
+            int rightAlt = parseExpression();
 
-            // set right start with the parsed expression
-            int rightStart = parseExpression();
+            // Set branch transitions
+            getState(branch).next1 = leftAlt;
+            getState(branch).next2 = rightAlt;
 
-            // get and set the branch state
-            State branchState = getState(branch);
-
-            // Set first transition of branch state to point to the left alternative
-            branchState.next1 = leftStart;
-
-            // set second transition of branch state to point to the right alternative
-            branchState.next2 = rightStart;
-
-            // initialise the join state with a new branch state
+            // Create a join state for both alternatives to end at
             int join = newState("BR", -1, -1);
 
-            // patch left start and right start to the join state
-            patchToJoin(leftStart, join);
-            patchToJoin(rightStart, join);
+            // Patch both alternatives to the join state
+            patchToJoin(leftAlt, join);
+            patchToJoin(rightAlt, join);
 
-            // return branch
             return branch;
         }
 
-        // return left state
         return left;
     }
 
     /**
-     * Patches the FSM to join the specified state to the given join state.
-     *
-     * @param stateNum The state number to patch.
-     * @param join     The join state number.
+     * Patches the last state in the chain starting from stateNum to point to join.
      */
     private void patchToJoin(int stateNum, int join) {
-
-        // Get the state object for the given state number
-        State s = getState(stateNum);
-
-        // If this state is not a branch and has no outgoing transitions
-        if (!s.symbol.equals("BR") && s.next1 == -1) {
-
-            // Set both transitions to point to the join state
-            s.next1 = join;
-            s.next2 = join;
-
-            // Otherwise, if this state is a branch state
-        } else if (s.symbol.equals("BR")) {
-
-            // check if first transition is set
-            if (s.next1 != -1)
-
-                // recursively patch first transition to join state
-                patchToJoin(s.next1, join);
-
-            // check if second transition is set and is different from the first
-            if (s.next2 != -1 && s.next2 != s.next1)
-
-                // recursively patch second transition to join state
-                patchToJoin(s.next2, join);
-        }
+        int last = getLastState(stateNum);
+        State s = getState(last);
+        s.next1 = join;
+        s.next2 = join;
     }
 
     /**
