@@ -19,8 +19,8 @@ public class REcompile {
 
     /**
      * Main method to run the REcompile program.
-     * It takes a regex pattern as a command-line argument and compiles it into an
-     * FSM.
+     * It takes a regex pattern as a command-line argument, compiles it into an
+     * FSM and prints the FSM to standard output.
      *
      * @param args Command-line arguments, expecting a single regex pattern.
      */
@@ -30,7 +30,8 @@ public class REcompile {
         if (args.length != 1) {
 
             // print usage message
-            System.out.println("Usage: java REcompile \"regex_pattern\"");
+            System.out.println(
+                    "Usage: java REcompile \"regex_pattern\" (enclose the regex pattern in double quotes to handle special characters)");
 
             // exit program
             return;
@@ -43,7 +44,7 @@ public class REcompile {
         if (regex.isEmpty()) {
 
             // print error message
-            System.out.println("Error: Regex pattern cannot be empty.");
+            System.out.println("Error: Regex cannot be null or empty");
 
             // exit program
             return;
@@ -52,10 +53,10 @@ public class REcompile {
         // try-catch block
         try {
 
-            // initialize FSMCompiler with regex
+            // initialise FSMCompiler with regex
             FSMCompiler compiler = new FSMCompiler(regex);
 
-            // Compile the regex into a finite state machine (FSM)
+            // compile the regex into a finite state machine (FSM)
             List<FSMCompiler.State> fsm = compiler.compile();
 
             // method call to print the FSM
@@ -65,7 +66,7 @@ public class REcompile {
         } catch (Exception e) {
 
             // print error message
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Compilation error: " + e.getMessage());
         }
     }
 
@@ -80,7 +81,8 @@ public class REcompile {
         // for each state in the FSM
         for (FSMCompiler.State state : fsm) {
 
-            // print the state number, symbol, and transitions
+            // print the state details: state number, symbol, first transition, second
+            // transition
             System.out.printf("%d,%s,%d,%d%n",
                     state.stateNum, state.symbol, state.next1, state.next2);
         }
@@ -93,8 +95,6 @@ public class REcompile {
  * The FSM is represented as a list of states, each with its transitions.
  */
 class FSMCompiler {
-
-    // private instance variables
 
     // The regex pattern to compile
     private final String regex;
@@ -115,16 +115,16 @@ class FSMCompiler {
      */
     static class State {
 
-        // private instance variables
-
-        // The state number
+        // state number
         final int stateNum;
 
         // symbol associated with the state
         final String symbol;
 
-        // next state numbers for transitions
+        // first transition state number
         int next1;
+
+        // second transition state number
         int next2;
 
         /**
@@ -152,7 +152,7 @@ class FSMCompiler {
      */
     public FSMCompiler(String regex) {
 
-        // check if regex is null or empty
+        // validate regex input (must not be null or empty)
         if (regex == null || regex.isEmpty()) {
 
             // throw an exception
@@ -171,43 +171,58 @@ class FSMCompiler {
      */
     public List<State> compile() throws Exception {
 
-        // set the initial state
+        // create an initial branch state with no transitions
         int initial = newState("BR", -1, -1);
 
         // set the start state by parsing the regex expression
         int startState = parseExpression();
 
-        // set the final state (branch state with no transitions. -1
+        // set the final state (branch state with no transitions)
         int finalState = newState("BR", -1, -1);
 
-        // initialise start state with the initial state
+        // retrieve the initial branch state object
         State s0 = getState(initial);
 
-        // set transitions with the start state
+        // set transitions for the initial state to point to the start state
         s0.next1 = startState;
         s0.next2 = startState;
 
-        // for each state in the FSM
+        // iterate through each state in the FSM
         for (State s : fsm) {
+
+            // check if state symbol is not a branch state
             if (!s.symbol.equals("BR")) {
-                if (s.next1 == -1) s.next1 = finalState;
-                if (s.next2 == -1) s.next2 = finalState;
+
+                // check if first transition is unset (-1)
+                if (s.next1 == -1) {
+
+                    // set first transition to the final state
+                    s.next1 = finalState;
+                }
+
+                // check if second transition is unset (-1)
+                if (s.next2 == -1) {
+
+                    // set second transition to the final state
+                    s.next2 = finalState;
+                }
             }
         }
 
         // for each state in the FSM
         for (State s : fsm) {
 
-            // check if the state is a branch and not the initial or final state
+            // check if this is a branch state with unset transitions (excluding
+            // initial/final)
             if (s.symbol.equals("BR") && s.stateNum != initial && s.stateNum != finalState && s.next1 == -1) {
 
-                // set the next states to the final state
+                // set both transitions to the final accepting state
                 s.next1 = finalState;
                 s.next2 = finalState;
             }
         }
 
-        // return the FSM
+        // return completed FSM
         return fsm;
     }
 
@@ -218,71 +233,134 @@ class FSMCompiler {
      * @throws Exception If there is an error during parsing.
      */
     private int parseExpression() throws Exception {
+
+        // parse the first term in the expression
         int term = parseTerm();
 
-        // If alternation, handle it
+        // check if the next character is the alternation ('|') operator
         if (hasMore() && peek() == '|') {
-            consume(); // consume '|'
 
-            // Parse the right alternative
+            // consume the alternation operator
+            consume();
+
+            // parse the right alternative
             int right = parseExpression();
 
-            // Create a join state for both alternatives to end at
+            // create a branching state to merge both alternatives
             int join = newState("BR", -1, -1);
 
-            // Patch both alternatives to the join state
+            // patch the end of both alternatives to the join state
             patchToJoin(term, join);
             patchToJoin(right, join);
 
-            // Create a branch state that splits to left and right
+            // create a branch state that splits to the left and right alternatives
             int branch = newBranchState(term, right);
 
-            // DO NOT patch the branch state to the join state!
-
+            // return the branch state as the entry point for alternation ('|')
             return branch;
         }
 
+        // If there is no alternation, return the term state
         return term;
     }
 
     /**
-     * Patches all states reachable from stateNum that have -1 transitions to point to join.
+     * Recursively patches all states reachable from 'stateNum' where transitions
+     * are unset (-1),
+     * ensuring they converge to the 'join' state.
+     *
+     * @param stateNum The starting state number for patching.
+     * @param join     The state number to redirect unset transitions to.
      */
     private void patchToJoin(int stateNum, int join) {
+
+        // set to keep track of visited states
         Set<Integer> visited = new HashSet<>();
+
+        // call the recursive helper method to patch the states
         patchToJoinHelper(stateNum, join, visited);
     }
 
+    /**
+     * Helper method to recursively patch states.
+     *
+     * @param stateNum The current state number being patched.
+     * @param join     The state number to patch unset transitions to.
+     * @param visited  A set to keep track of visited states to avoid cycles.
+     */
     private void patchToJoinHelper(int stateNum, int join, Set<Integer> visited) {
-        if (!visited.add(stateNum)) return;
+
+        // check if stateNum is already visited
+        if (!visited.add(stateNum)) {
+
+            // exit method (avoid infinite loop)
+            return;
+        }
+
+        // get the state object for the current state number
         State s = getState(stateNum);
-        if (s.next1 == -1) s.next1 = join;
-        else patchToJoinHelper(s.next1, join, visited);
-        if (s.next2 == -1) s.next2 = join;
-        else if (s.next2 != s.next1) patchToJoinHelper(s.next2, join, visited);
+
+        // check if state has no transitions
+        if (s.next1 == -1) {
+
+            // redirect first transition to the join state
+            s.next1 = join;
+        }
+
+        // othwerwise recursively patch next reachable states
+        else
+            patchToJoinHelper(s.next1, join, visited);
+
+        // check if state has no second transition
+        if (s.next2 == -1) {
+
+            // set second transition to the join state
+            s.next2 = join;
+        }
+
+        // else if second transition is not the first
+        else if (s.next2 != s.next1)
+
+            // recursively patch the second transition
+            patchToJoinHelper(s.next2, join, visited);
     }
 
     /**
-     * Parses a term in the regex expression.
+     * Parses a sequence of factors (a "term") in the regex.
+     * Handles concatenation by chaining factors together.
      *
-     * @return The state number of the parsed term.
+     * @return The state number of the first factor in the term.
      * @throws Exception If there is an error during parsing.
      */
     private int parseTerm() throws Exception {
+
+        // Parse the first factor in the term
         int first = parseFactor();
+
+        // set last to the first factor
         int last = first;
 
+        // Continue parsing and chaining factors until an alternation or closing
+        // parenthesis is found
         while (hasMore() && peek() != '|' && peek() != ')') {
+
+            // Parse the next factor in the term
             int next = parseFactor();
-            patchToJoin(last, next); // Use patchToJoin for chaining
+
+            // Create a branch state that connects the last state to the next state
+            patchToJoin(last, next);
+
+            // set the last state to the next state
             last = next;
         }
 
+        // return the first state (entry point of the term)
         return first;
     }
 
     /**
      * Parses a factor in the regex expression.
+     * A factor is an atom possibly followed by a repetition operator (*, +, ?).
      *
      * @return The state number of the parsed factor.
      * @throws Exception If there is an error during parsing.
@@ -319,6 +397,8 @@ class FSMCompiler {
 
     /**
      * Parses an atom in the regex expression.
+     * An atom can be a grouped expression, a wildcard, an escaped character, or a
+     * literal character.
      *
      * @return The state number of the parsed atom.
      * @throws Exception If there is an error during parsing.
@@ -346,7 +426,7 @@ class FSMCompiler {
             // return expression state
             return expr;
 
-            // check if next character is period (wildcard)
+            // check if next character is a period (wildcard)
         } else if (peek() == '.') {
 
             // consume the period character
@@ -364,7 +444,7 @@ class FSMCompiler {
             // consume the backslash character
             consume();
 
-            // check if there are more characters
+            // check if there are no more characters
             if (!hasMore())
 
                 // throw an exception
@@ -378,6 +458,8 @@ class FSMCompiler {
 
             // return character state
             return charState;
+
+            // otherwise, treat the character as a literal
         } else {
 
             // consume the character
@@ -389,10 +471,10 @@ class FSMCompiler {
                 // throw an exception
                 throw new Exception("Unescaped special character: " + c);
 
-            // create a state for the character
+            // create a state for the literal character
             int charState = newState(String.valueOf(c), -1, -1);
 
-            // return character state
+            // return literal character state
             return charState;
         }
     }
@@ -404,13 +486,14 @@ class FSMCompiler {
      * @return The state number of the new branch state created.
      */
     private int handleStar(int atom) {
-        // Create a branch state that can either go to the atom or skip past the star
+
+        // Create a branch that loops for zero or more repetitions
         int branch = newBranchState(atom, -1);
 
-        // Link the last state of the atom back to the branch state (for repetition)
+        // connect the last state of the atom to the branch
         linkStates(getLastState(atom), branch);
 
-        // Return the branch state as the entry point for the star
+        // Return the branch state as the entry point for '*'
         return branch;
     }
 
@@ -422,33 +505,33 @@ class FSMCompiler {
      */
     private int handlePlus(int atom) {
 
-        // Link the last state of the atom back to the atom itself to create a loop (one
-        // or more repetitions)
+        // ensure one occurence, then loop back to allow for more repetitions
         linkStates(getLastState(atom), atom);
 
-        // Return the starting state of the atom as the entry point for the plus
-        // operation
+        // return atom as the entry point for '+'
         return atom;
     }
 
     /**
      * Handles the repetition operator '?' (question mark).
      *
-     * @param atom The state number of the atom to apply the question mark operator to.
+     * @param atom The state number of the atom to apply the question mark operator
+     *             to.
      * @return The state number of the new branch state created.
      * @throws Exception If there is an error during handling.
      */
     private int handleQuestion(int atom) throws Exception {
-        // Create a join state for both branches to rejoin
+
+        // create a join state for both branches to merge
         int join = newState("BR", -1, -1);
 
-        // Patch the end of the atom chain to the join state
+        // patch the end of the atom chain to the join state
         patchToJoin(atom, join);
 
-        // Create a branch state: next1 = atom, next2 = join (skip atom)
+        // create a branch that allows either skipping or including the atom
         int branch = newBranchState(atom, join);
 
-        // Patch the join state to the final state later in compile()
+        // return the branch state as the entry point for '?'
         return branch;
     }
 
@@ -492,13 +575,19 @@ class FSMCompiler {
      * @param to   The state number to link to.
      */
     private void linkStates(int from, int to) {
+
+        // initialise state object with state number to link from
         State s = getState(from);
 
+        // check if state is a branch state and has no second transition
         if (s.symbol.equals("BR") && s.next2 == -1 && s.next1 != -1) {
-            // Only patch next2 for branch states created by '?'
+            // set second transition with state number to link to
             s.next2 = to;
+
+            // else, check if state is not a branch state and has no first transition
         } else if (!s.symbol.equals("BR") && s.next1 == -1) {
-            // For normal states, patch next1 if it's unset
+
+            // set first transition with state number to link to
             s.next1 = to;
         }
     }
@@ -510,27 +599,58 @@ class FSMCompiler {
      * @return The state number of the last state in the chain.
      */
     private int getLastState(int start) {
+
+        // return the last state by calling the helper method
         return getLastStateHelper(start, new HashSet<>());
     }
 
     private int getLastStateHelper(int start, Set<Integer> visited) {
+
+        // check if stateNum is already visited
         if (!visited.add(start)) {
-            // Already visited this state, avoid infinite loop
+
+            // return start (avoid infinite loop)
             return start;
         }
+
+        // set state object with start state number
         State s = getState(start);
 
+        // check if state has no outgoing transitions (end of path)
         if (s.next1 == -1 && s.next2 == -1)
+
+            // return start (last reachable state)
             return start;
 
+        // check if the first transition leads to another state
         if (s.next1 != -1 && s.next1 != start) {
+
+            // recursively traverse the FSM along the first transition
             int last = getLastStateHelper(s.next1, visited);
-            if (last != s.next1) return last;
+
+            // check if recursion reached a deeper valid state
+            if (last != s.next1) {
+
+                // return the last reachable state found
+                return last;
+            }
         }
+
+        // check if the second transition leads to another state
         if (s.next2 != -1 && s.next2 != start) {
+
+            // recursively traverse the FSM along the second transition
             int last = getLastStateHelper(s.next2, visited);
-            if (last != s.next2) return last;
+
+            // check if recursion reached a deeper valid state
+            if (last != s.next2) {
+
+                // return the last reachable state found
+                return last;
+            }
         }
+
+        // return start (no further valid transitions found)
         return start;
     }
 
@@ -547,6 +667,8 @@ class FSMCompiler {
 
             // If the state number matches, return the state
             if (s.stateNum == stateNum)
+
+                // return the state object
                 return s;
         }
 
