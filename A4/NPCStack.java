@@ -1,3 +1,7 @@
+// Name: Hiran Greening
+// ID: 1522172
+
+// Import Statements
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -5,19 +9,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class implements a simulated annealing algorithm to stack boxes 
+ * in a way that maximizes the total height of the stack.
+ */
 public class NPCStack {
+    
+    /**
+     * Main method to run the NPCStack program.
+     * 
+     * @param args Command line arguments: input file, initial temperature, cooling rate, and optional runs.
+     */
 
     public static void main(String[] args) {
-        if (args.length < 3 || args.length > 4) {
-            System.out.println("Usage: java NPCStack <input_file> <initial_temperature> <cooling_rate> [runs]");
-            return;
-        }
 
+        // Check for correct number of arguments
+        if (args.length < 3 || args.length > 4) {
+
+            // Print usage instructions if arguments are incorrect
+            System.out.println("Usage: java NPCStack <input_file> <initial_temperature> <cooling_rate> [runs]");
+
+            // exit program
+            return;
+        }   
+
+        // set filename, initial temperature, cooling rate, and runs from command line arguments
         String filename = args[0];
         int initialTemperature = Integer.parseInt(args[1]);
         double coolingRate = Double.parseDouble(args[2]);
         int runs = (args.length == 4) ? Integer.parseInt(args[3]) : 1;
-
+        
         NPCStack npcStack = new NPCStack();
         List<Box> boxes = npcStack.readInputFile(filename);
 
