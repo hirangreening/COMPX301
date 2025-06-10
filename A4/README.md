@@ -1,6 +1,6 @@
 # COMPX301 Assignment 4 - Tallest Box Stack
 
-**Authors:** Hiran Greening, 1522172
+**Author:** Hiran Greening, 1522172
 
 ## Description
 This program implements a simulated annealing heuristic to find the tallest possible stack of boxes, given a set of boxes with three integer dimensions each. Each box can be used at most once, in any orientation, and must fit strictly within the box below it (touching faces condition).
