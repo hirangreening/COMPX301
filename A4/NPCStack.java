@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * This class implements a simulated annealing algorithm to stack boxes 
@@ -20,25 +22,44 @@ public class NPCStack {
      * 
      * @param args Command line arguments: input file, initial temperature, cooling rate, and optional runs.
      */
-
     public static void main(String[] args) {
 
         // Check for correct number of arguments
         if (args.length < 3 || args.length > 4) {
-
-            // Print usage instructions if arguments are incorrect
             System.out.println("Usage: java NPCStack <input_file> <initial_temperature> <cooling_rate> [runs]");
-
-            // exit program
             return;
         }   
 
-        // set filename, initial temperature, cooling rate, and runs from command line arguments
         String filename = args[0];
-        int initialTemperature = Integer.parseInt(args[1]);
-        double coolingRate = Double.parseDouble(args[2]);
-        int runs = (args.length == 4) ? Integer.parseInt(args[3]) : 1;
-        
+        int initialTemperature = 0;
+        double coolingRate = 0.0;
+        int runs = 1;
+
+        try {
+            initialTemperature = Integer.parseInt(args[1]);
+            coolingRate = Double.parseDouble(args[2]);
+            if (args.length == 4) {
+                runs = Integer.parseInt(args[3]);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: initial_temperature must be an integer, cooling_rate a real number, runs an integer.");
+            return;
+        }
+
+        // Validate input parameters
+        if (initialTemperature <= 0) {
+            System.out.println("Error: initial_temperature must be > 0.");
+            return;
+        }
+        if (coolingRate < 0.1 || coolingRate > initialTemperature) {
+            System.out.println("Error: cooling_rate must be in the range 0.1 <= cooling_rate <= initial_temperature.");
+            return;
+        }
+        if (runs <= 0) {
+            System.out.println("Error: runs must be > 0.");
+            return;
+        }
+
         NPCStack npcStack = new NPCStack();
         List<Box> boxes = npcStack.readInputFile(filename);
 
@@ -112,12 +133,22 @@ public class NPCStack {
         return bestSolution;
     }
 
+    /**
+     * Generates an initial candidate stack using a greedy approach:
+     * Sort all box orientations by height (descending), then iteratively add the tallest box
+     * that fits and hasn't been used yet. This is fast and often finds a good starting point,
+     * especially for "cubes" data where all boxes can be stacked.
+     */
     private List<Box> generateInitialSolution(List<Box> allOrientations) {
-        // Greedy: try to build a valid stack using tallest boxes/orientations first, one per box id
         List<Box> sorted = new ArrayList<>(allOrientations);
-        sorted.sort((a, b) -> Integer.compare(b.getDimensions()[2], a.getDimensions()[2]));
+        sorted.sort((a, b) -> {
+            int areaA = a.getDimensions()[0] * a.getDimensions()[1];
+            int areaB = b.getDimensions()[0] * b.getDimensions()[1];
+            if (areaB != areaA) return Integer.compare(areaB, areaA);
+            return Integer.compare(b.getDimensions()[2], a.getDimensions()[2]);
+        });
         List<Box> stack = new ArrayList<>();
-        List<Integer> usedIds = new ArrayList<>();
+        Set<Integer> usedIds = new HashSet<>();
         for (Box candidate : sorted) {
             if (usedIds.contains(candidate.getId())) continue;
             if (stack.isEmpty() || canPlaceOnTop(stack.get(stack.size() - 1), candidate)) {
@@ -129,10 +160,9 @@ public class NPCStack {
     }
 
     private List<Box> getNeighborSolution(List<Box> currentStack, List<Box> allOrientations, int temperature) {
-        // Try to change up to 'temperature' boxes in the stack
         Random random = new Random();
         List<Box> newStack = new ArrayList<>(currentStack);
-        List<Integer> usedIds = new ArrayList<>();
+        Set<Integer> usedIds = new HashSet<>();
         for (Box b : newStack) usedIds.add(b.getId());
         for (int t = 0; t < temperature; t++) {
             int action = random.nextInt(3); // 0: insert, 1: remove, 2: substitute
@@ -157,7 +187,7 @@ public class NPCStack {
                 }
             } else if (action == 1 && !newStack.isEmpty()) { // remove
                 int idx = random.nextInt(newStack.size());
-                usedIds.remove((Integer)newStack.get(idx).getId());
+                usedIds.remove(newStack.get(idx).getId());
                 newStack.remove(idx);
             } else if (action == 2 && !newStack.isEmpty()) { // substitute
                 int idx = random.nextInt(newStack.size());
@@ -194,8 +224,8 @@ public class NPCStack {
     private boolean canPlaceOnTop(Box bottomBox, Box topBox) {
         int[] below = bottomBox.getDimensions();
         int[] above = topBox.getDimensions();
-        // Touching faces: width and length of above must be strictly less than below
-        return (above[0] < below[0] && above[1] < below[1]) || (above[1] < below[0] && above[0] < below[1]);
+        // Touching faces: width and length of above must be strictly less than below (AND only)
+        return (above[0] < below[0] && above[1] < below[1]);
     }
 
     private int getStackHeight(List<Box> stack) {
