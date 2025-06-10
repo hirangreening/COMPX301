@@ -1,0 +1,751 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>COMPX301 - Week 10</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1f1ac460-8dda-801d-aa67-edaac21cf09d" class="page sans"><header><h1 class="page-title">COMPX301 - Week 10</h1><p class="page-description"></p></header><div class="page-body"><h1 id="1f4ac460-8dda-808c-a269-f06ca5a7f29d" class="">How can we find solutions to NP-Hard problems?</h1><h2 id="1f4ac460-8dda-80cc-bd74-d38051e3d33d" class="">Subset Selection</h2><p id="1f4ac460-8dda-80e0-8aca-e329eb7879dc" class="">How can we find good solutions to local search and optimization problems that are a form of subset selection?</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-8066-aefb-e462b9de1ce9" class="code"><code class="language-Java">Subset selection:
+The selection of the subset from the total set can be represented by a bit pattern
+of 0&#x27;s and 1&#x27;s which represent whether the item has been selected or not.
+
+e.g.
+
+[x1, x2, x3, x4, x5, x6, ...]
+[ 1   0   1   1   0   1, ...]
+
+So if we want to move an item from one subset to the other, we just flip a bit from
+0 to 1 or vice versa. 
+
+If two of these bit patterns have only one bit difference they are considered:
+Neighbouring solutions
+
+e.g. 
+1 0 1 1 0 1
+
+Would be neighbours with:
+
+1 0 1 1 1 1
+and 
+1 0 1 0 0 1</code></pre><h3 id="1f4ac460-8dda-8041-a5cc-e145073b3871" class="">Generate and test:</h3><p id="1f4ac460-8dda-8008-bc39-e36931573fba" class="">The “naive” way to find a solution.</p><ol type="1" id="1f4ac460-8dda-8076-84c4-e96f5185e3cf" class="numbered-list" start="1"><li>Repeatedly generate a candidate solution.</li></ol><ol type="1" id="1f4ac460-8dda-809d-8a78-f3f889f13756" class="numbered-list" start="2"><li>Evaluate it.</li></ol><ol type="1" id="1f4ac460-8dda-8022-a7e9-c306289d7804" class="numbered-list" start="3"><li>Always keep the best one.</li></ol><ol type="1" id="1f4ac460-8dda-80b5-ae48-ca26f5911a25" class="numbered-list" start="4"><li>Stop when resources are exhausted (generally time).</li></ol><h2 id="1f1ac460-8dda-80c2-8bfc-df509d9860c6" class="">Heuristic methods</h2><p id="1f1ac460-8dda-8001-b849-c543d6a53baf" class="">Rule of thumb, educated guess.</p><p id="1f4ac460-8dda-8070-a3d5-e8f573d61efa" class="">These will likely be tested, but at a high level. You won’t be expected to know pseudo-code or anything. But as Tony said “you should probably be able to explain to your grandma how the genetic algorithm works”.</p><h2 id="1f1ac460-8dda-80b9-83e3-c69e65464346" class="">K-clique problem.</h2><p id="1f1ac460-8dda-80d2-9efc-cee7f8005ddd" class="">Find a subset of k vertices which is a complete graph, that is, a complete subgraph of size k.</p><p id="1f1ac460-8dda-80cf-8900-f59fe5902f0c" class="">for k=3 there are 336 combinations to check</p><p id="1f1ac460-8dda-8061-9239-c039f4fd64df" class="">for k=4 there are 1680 combinations to check</p><p id="1f1ac460-8dda-80ff-bb7e-fb837985bcd4" class="">for k=5 there are 6730 combinations to check</p><p id="1f1ac460-8dda-8055-98e8-c50d77fc4fd7" class="">… a factorial expansion of the search space.</p><p id="1f1ac460-8dda-80aa-9c1a-ce8b1b2a9dd5" class="">
+</p><p id="1f1ac460-8dda-80f2-b768-e66f91edbf51" class="">A complete graph is where each node in the graph has a direct link to every other node.</p><p id="1f1ac460-8dda-807d-a8a5-e4ecd5a1411c" class="">
+</p><h3 id="1f1ac460-8dda-8028-85b4-c0a2cfe7c649" class="">Hill climbing:</h3><ol type="1" id="1f1ac460-8dda-808d-b039-ef17ef7177b9" class="numbered-list" start="1"><li>Choose a random starting set, S = {A, B, C, D, E}</li></ol><ol type="1" id="1f1ac460-8dda-8060-8a46-dff4199bd7d9" class="numbered-list" start="2"><li>Evaluate S, say as the total number of adjacencies  eval({A, B, C, D, E}) = 15</li></ol><ol type="1" id="1f1ac460-8dda-8044-8734-fc688db53018" class="numbered-list" start="3"><li>Change one vertex in S to produce S’ = {A, B, C, D, F}</li></ol><ol type="1" id="1f1ac460-8dda-80f1-8698-f1e68117043b" class="numbered-list" start="4"><li>If eval(S’)&gt;eval(S) then S = S’</li></ol><ol type="1" id="1f1ac460-8dda-80b7-abc2-f932917777c2" class="numbered-list" start="5"><li>If S is the local maximum then stop, else go to step 3.</li></ol><h3 id="1f1ac460-8dda-809a-bea7-d1e7112d6a4e" class="">Simulated annealing:</h3><p id="1f1ac460-8dda-8078-9ec7-ee1aac157cf1" class="">Try and make random progress toward the solution, gradually confining the search space.</p><p id="1f1ac460-8dda-807f-8103-c953e4396296" class="">
+</p><p id="1f1ac460-8dda-80ef-8d01-c13b5e7c5624" class="">t = initial temperature, how many changes allowed on each iteration.</p><p id="1f1ac460-8dda-8033-b79f-dd272f1a83ce" class="">r = rate of cooling, how quickly t diminishes</p><p id="1f1ac460-8dda-804d-aad2-e7c77d0b8b26" class="">
+</p><ol type="1" id="1f1ac460-8dda-80f2-b0f7-ded7c396a195" class="numbered-list" start="1"><li>Choose a random starting set,</li></ol><ol type="1" id="1f1ac460-8dda-8027-bec2-e6225e7410a2" class="numbered-list" start="2"><li>Evaluate S, total number of adjacencies</li></ol><ol type="1" id="1f1ac460-8dda-80fa-b3f6-e752ae802129" class="numbered-list" start="3"><li>Change as many vertices in S as allowed by t to produce S’</li></ol><ol type="1" id="1f1ac460-8dda-80d0-8a85-ca64dab5499b" class="numbered-list" start="4"><li>if eval(S’) &gt;eval(S) then S = S’</li></ol><ol type="1" id="1f1ac460-8dda-8082-b697-daca25acab62" class="numbered-list" start="5"><li>cool t by r and if t &gt; 0 go to 3.</li></ol><p id="1f1ac460-8dda-80dd-a663-e33fb7d82218" class="">
+</p><h3 id="1f1ac460-8dda-80a9-bc22-c17ba9143698" class="">Genetic algorithm:</h3><p id="1f1ac460-8dda-80ce-8a57-db455e27e7a1" class="">Keep a population and gradually improve the fitness.</p><ol type="1" id="1f1ac460-8dda-8030-83ae-c169fadee5be" class="numbered-list" start="1"><li>Start with a population of solutions, G</li></ol><ol type="1" id="1f1ac460-8dda-8056-882f-c3ccc3377583" class="numbered-list" start="2"><li>Evaluate fitness of each solution.</li></ol><ol type="1" id="1f1ac460-8dda-80ba-832e-e80aa15a1bbe" class="numbered-list" start="3"><li>Select subset of G to survive in G’</li></ol><ol type="1" id="1f1ac460-8dda-809c-bdab-f30f855649a1" class="numbered-list" start="4"><li>Select two solutions in G’ for breeding</li></ol><ol type="1" id="1f1ac460-8dda-80b9-89e3-d6c0c6a9e3c2" class="numbered-list" start="5"><li>Add offspring to G’</li></ol><ol type="1" id="1f1ac460-8dda-80be-8b47-f4c2bafd8ece" class="numbered-list" start="6"><li>Mutate weakest solution (optional)</li></ol><ol type="1" id="1f1ac460-8dda-8049-8c97-dba90c817e69" class="numbered-list" start="7"><li>If more time allowed, go to step 2.</li></ol><p id="1f4ac460-8dda-807d-a74f-c296db156af9" class="">
+</p><h1 id="1f1ac460-8dda-8001-8532-ce8f94387110" class="">Assignment 4 - Tallest Box Stack.</h1><p id="1f4ac460-8dda-80dc-9f44-f118e9dce5f2" class="">
+</p><h3 id="1f4ac460-8dda-804d-9690-d3fdb31e5a73" class=""><strong>Due: 7/6/2025</strong></h3><h3 id="1f4ac460-8dda-806a-83ae-f5de29b4b743" class=""><strong>Description:</strong> </h3><p id="1f4ac460-8dda-80af-a213-dae7b88ad9a3" class="">Implement a simulated annealing solution to find the tallest stack possible for a given set of boxes, according to the specification given below. This assignment may be done in pairs or individually (n.b. students arrange their own partnerships). The solution must be written in Java to run on a Linux machine like those in the R Block labs.  (An option to try for a genetic algorithm approach instead requires explicit permission from the lecturer.)</p><h3 id="1f4ac460-8dda-8096-9aea-c882f998a38d" class=""><strong>Specification:</strong></h3><ul id="1f4ac460-8dda-80fb-859d-d6e345381ecd" class="bulleted-list"><li style="list-style-type:disc">The dimensions of a box are specified with three integers—defining its height, width and depth (in no particular order)</li></ul><ul id="1f4ac460-8dda-8021-983b-f0d4c46a6528" class="bulleted-list"><li style="list-style-type:disc">A set of boxes is defined within a text file, where each line has three space-separated integers giving the dimensions of one box. (Several sample data files are supplied in the archive file below.)</li></ul><ul id="1f4ac460-8dda-80ac-91fe-c26d502054ac" class="bulleted-list"><li style="list-style-type:disc">A box can be oriented such that any one side is its bottom face. Thus, a box has at most three distinct orientations.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-80ad-af42-f4b7e49d021a" class="code"><code class="language-Java">You may recall in lectures that Tony talked about creating an array and storing 
+all boxes and all possible orientations in here (So it would be 3 * n in size where
+n is the number of boxes). You may be able to reduce this number since the orientations
+of a cube are all the same, for example.
+
+With this assignment you would need to also add some kind of identifier to the box 
+since each box can only be used once.</code></pre><ul id="1f4ac460-8dda-8022-a0ee-fb0ccdb25c64" class="bulleted-list"><li style="list-style-type:disc">Boxes are placed one-on-top-of-another to make a stack.</li></ul><ul id="1f4ac460-8dda-80ce-8598-e3b05550f9ae" class="bulleted-list"><li style="list-style-type:disc"><strong>Touching faces condition:</strong> one box may be placed on top of another provided its bottom face is smaller than the top face of the box upon which it rests. That is, its bottom face must fit entirely within the area of the top-face of the box underneath, without over-hang or flush-sides (i.e. strictly shorter in both dimensions).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-8075-b57a-f3f932f6ab37" class="code"><code class="language-Java">For box a and box b
+b can go ontop of a only if b.width &lt; a.width and b.depth &lt; a.depth</code></pre><ul id="1f4ac460-8dda-8030-8ddd-f4adf95090c6" class="bulleted-list"><li style="list-style-type:disc"><strong>Single use condition:</strong> Each box can be used <em>at most once</em> in the final stack, in any orientation that allows it to satisfy the &quot;touching faces condition&quot;. (N.b. dynamic programming will not solve this problem, but might be adapted to find an initial candidate solution.)</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-8022-b206-e903d51288cb" class="code"><code class="language-Java">You can use the dynamic programming method, then remove all duplicates with the smallest
+height to get a starting point, if you like.</code></pre><ul id="1f4ac460-8dda-805a-9b1b-c7ae38153985" class="bulleted-list"><li style="list-style-type:disc">Your program must seek to find the tallest stack possible for a given set of boxes without violating the &quot;touching faces&quot; or &quot;single use&quot; conditions (n.b. this likely means that you cannot use all the boxes, except with certain sets of boxes).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-80a4-871f-cc38843f184f" class="code"><code class="language-Java">Your program doesn&#x27;t have to find the optimal solution every time</code></pre><ul id="1f4ac460-8dda-80ec-8ff4-e97bd59d32d2" class="bulleted-list"><li style="list-style-type:disc">The output of your program is a list of the boxes forming the tallest stack you can find that satisfies the conditions above. Each line of output specifies the dimensions of one box in the stack using three integers (separated by spaces), where the first integer is the width of the box, the second is its length and the third is its height, and these are followed by a fourth integer that states the total height of the stack at the point where this box is top-most. The lines of output should be in order from the top-most box down to the bottom-most.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-806e-bb07-c7b70ce66711" class="code"><code class="language-Java">output format:
+
+Smallest
+....
+....
+Largest 
+
+width, length/depth, height, total height at current box.
+
+e.g:
+
+1 1 1 8
+2 2 2 7
+3 3 2 5
+4 5 3 3</code></pre><ul id="1f4ac460-8dda-806f-ad5e-fd30e55c9750" class="bulleted-list"><li style="list-style-type:disc">Your program must run from the command-line (i.e. as a console program) and take three arguments: the first is the name of a text file presumed to define a set of boxes as outlined above; the second is an integer specifying the initial temperature <em>t</em>, expressed as an integer greater than 0, that specifies the number of boxes that can be changed (inserted or removed or substituted) from the current candidate solution to derive a neighbouring solution, and the third is a real value <em>r</em>, where <em>0.1 &lt;= r &lt;= t</em> and is the rate of cooling expressed as how much <em>t</em> is reduced <strong>after</strong> each new solution has been generated and tested (i.e. <em>t = t - r</em>). Some test input files are available on Moodle in the archive file below, but students are encouraged to create their own additional test data and share results with each other during experimentation.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1f4ac460-8dda-80c9-abfc-f011657d1f54" class="code"><code class="language-Java">
+Usage:
+
+java NPCStack filename temperature coolingRate
+
+java NPCStack boxes.txt 20 0.1
+
+
+You may find some sources online that use something like:
+
+t *= r
+
+to calculate temperature reduction, but the outline specifies:
+
+t = t - r
+
+So that is what we will use for this assignment.</code></pre><ul id="1f4ac460-8dda-80c6-baad-ec7d7167dab9" class="bulleted-list"><li style="list-style-type:disc">Each line of input from the file should be checked to ensure all box dimensions are positive integers. Any line of input with an error should just be ignored.</li></ul><ul id="1f4ac460-8dda-80ca-8d01-f424da8aae8f" class="bulleted-list"><li style="list-style-type:disc">Your program class must be called NPCStack.java</li></ul><ul id="1f4ac460-8dda-8014-bcf5-e9ec0ff8814c" class="bulleted-list"><li style="list-style-type:disc">Students must devise their own method for finding the initial candidate solution, and this should be described both in the source code documentation and in the README file. </li></ul><p id="1f5ac460-8dda-80a6-9d49-e3e9e6aba05e" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

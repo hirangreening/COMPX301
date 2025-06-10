@@ -40,15 +40,15 @@ public class REcompile {
         // get regex from arguments
         String regex = args[0];
 
-        // check if regex is empty
-        if (regex.isEmpty()) {
+        // // check if regex is empty
+        // if (regex.isEmpty()) {
 
-            // print error message
-            System.out.println("Error: Regex cannot be null or empty");
+        // // print error message
+        // System.out.println("Error: Regex cannot be null or empty");
 
-            // exit program
-            return;
-        }
+        // // exit program
+        // return;
+        // }
 
         // try-catch block
         try {
@@ -163,7 +163,7 @@ class FSMCompiler {
         this.regex = regex;
     }
 
-    /**
+/**
      * Compiles the regex pattern into a finite state machine (FSM).
      *
      * @return A list of states representing the FSM.
@@ -174,11 +174,19 @@ class FSMCompiler {
         // create an initial branch state with no transitions
         int initial = newState("BR", -1, -1);
 
-        // set the start state by parsing the regex expression
-        int startState = parseExpression();
-
         // set the final state (branch state with no transitions)
         int finalState = newState("BR", -1, -1);
+
+        if (regex.isEmpty()) {
+            State s0 = getState(initial);
+            s0.next1 = finalState;
+            s0.next2 = finalState;
+            fsm.add(finalState);
+            return fsm;
+        }
+
+        // set the start state by parsing the regex expression
+        int startState = parseExpression();
 
         // retrieve the initial branch state object
         State s0 = getState(initial);
@@ -189,20 +197,26 @@ class FSMCompiler {
 
         // iterate through each state in the FSM
         for (State s : fsm) {
-
             // check if state symbol is not a branch state
             if (!s.symbol.equals("BR")) {
-
                 // check if first transition is unset (-1)
                 if (s.next1 == -1) {
-
-                    // set first transition to the final state
+            // Create a new state for the literal symbol
+            int literalState = newState("LITERAL", -1, -1);
+            literalState.symbol = s.symbol;
+            
+            // Create a new state for the branching state
+            int branchState = newState("BR", -1, -1);
+            
+            // Update the transitions of the previous state to point to the literal state
+            s.next1 = literalState;
+            
+            // Update the transitions of the literal state to point to the branch state
+            getState(literalState).next1 = branchState;        // set first transition to the final state
                     s.next1 = finalState;
                 }
-
                 // check if second transition is unset (-1)
                 if (s.next2 == -1) {
-
                     // set second transition to the final state
                     s.next2 = finalState;
                 }
@@ -211,11 +225,8 @@ class FSMCompiler {
 
         // for each state in the FSM
         for (State s : fsm) {
-
-            // check if this is a branch state with unset transitions (excluding
-            // initial/final)
+            // check if this is a branch state with unset transitions (excluding initial/final)
             if (s.symbol.equals("BR") && s.stateNum != initial && s.stateNum != finalState && s.next1 == -1) {
-
                 // set both transitions to the final accepting state
                 s.next1 = finalState;
                 s.next2 = finalState;
@@ -224,44 +235,6 @@ class FSMCompiler {
 
         // return completed FSM
         return fsm;
-    }
-
-    /**
-     * Parses the regex expression and builds the FSM.
-     *
-     * @return The state number of the parsed expression.
-     * @throws Exception If there is an error during parsing.
-     */
-    private int parseExpression() throws Exception {
-
-        // parse the first term in the expression
-        int term = parseTerm();
-
-        // check if the next character is the alternation ('|') operator
-        if (hasMore() && peek() == '|') {
-
-            // consume the alternation operator
-            consume();
-
-            // parse the right alternative
-            int right = parseExpression();
-
-            // create a branching state to merge both alternatives
-            int join = newState("BR", -1, -1);
-
-            // patch the end of both alternatives to the join state
-            patchToJoin(term, join);
-            patchToJoin(right, join);
-
-            // create a branch state that splits to the left and right alternatives
-            int branch = newBranchState(term, right);
-
-            // return the branch state as the entry point for alternation ('|')
-            return branch;
-        }
-
-        // If there is no alternation, return the term state
-        return term;
     }
 
     /**
@@ -504,12 +477,15 @@ class FSMCompiler {
      * @return The state number of the new branch state created.
      */
     private int handlePlus(int atom) {
+        int startAtom = atom;
+        int endAtom = getLastState(atom);
+        int branch = newBranchState(startAtom, -1); // Initial branch to the atom
 
-        // ensure one occurence, then loop back to allow for more repetitions
-        linkStates(getLastState(atom), atom);
+        // Create a branch for looping back to the start of the atom
+        int loopBranch = newBranchState(startAtom, -1);
+        linkStates(endAtom, loopBranch); // Link the end of the atom to the loop branch
 
-        // return atom as the entry point for '+'
-        return atom;
+        return branch; // The entry point is the initial branch
     }
 
     /**
@@ -589,6 +565,9 @@ class FSMCompiler {
 
             // set first transition with state number to link to
             s.next1 = to;
+
+            // set second transition with state number to link to
+            s.next2 = to;
         }
     }
 
