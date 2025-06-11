@@ -27,10 +27,16 @@ public class NPCStack {
             return;
         }
 
-        // Parse command line arguments
+        // get filename from args
         String filename = args[0];
+
+        // initialise variable for initial temperature
         int initialTemperature = 0;
+
+        // initialise variable for cooling rate
         double coolingRate = 0.0;
+
+        // initialise variable for runs (default to 1)
         int runs = 1;
 
         // try-catch block
@@ -88,7 +94,7 @@ public class NPCStack {
         // Initialise a list of box objects by reading the input file
         List<Box> boxes = npcStack.readInputFile(filename);
 
-        // Declae box list to hold the best stack
+        // initialise a list to hold the best stack found
         List<Box> bestStack = null;
 
         // set best height to 0
@@ -150,10 +156,10 @@ public class NPCStack {
                     // try-catch block
                     try {
 
-                        // intialise array of integers to hold dimensions
+                        // initalise array of integers to hold dimensions
                         int[] dimensions = new int[3];
 
-                        // loop through each part
+                        // loop through each dimension part
                         for (int i = 0; i < 3; i++) {
 
                             // set the dimension by parsing the part
@@ -162,7 +168,7 @@ public class NPCStack {
                             // check if the dimension is valid (positive)
                             if (dimensions[i] <= 0) {
 
-                                // throw number format exception
+                                // throw exception if dimension is not positive
                                 throw new NumberFormatException();
                             }
                         }
@@ -475,7 +481,7 @@ public class NPCStack {
             }
         }
 
-        // return the valid stack
+        // return valid stack
         return validStack;
     }
 
@@ -496,8 +502,7 @@ public class NPCStack {
         // initalise int array to hold above dimensions
         int[] above = topBox.getDimensions();
 
-        // return true if the top box's dimensions are less than the bottom box's
-        // dimensions
+        // return true if the top box's width and length are both strictly less than those of the bottom box
         return (above[0] < below[0] && above[1] < below[1]);
     }
 
